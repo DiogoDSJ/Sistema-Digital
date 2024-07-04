@@ -7,7 +7,9 @@
 #include <errno.h>
 #include <stdint.h>
 #include <inttypes.h>
+#include <linux/input.h>
 
+#define MOUSE_DEV "/dev/input/event0"
 
     int main() {
         const char *device_path = "/dev/driver_dos_amigos"; // Substitua pelo caminho do seu dispositivo
@@ -93,7 +95,7 @@
 
     };
 
- 
+    
 
 
         int endereco = 10000;
@@ -130,12 +132,58 @@
                 endereco++;
             }   
         }
-
-
     
         print_sprite(fd, &dataA, &dataB, 1, 320, 240, 25, 1);
 
-        
+    int mouse;
+    struct input_event ev;
+
+    printf("Iniciando leitura de eventos do mouse...\n");
+
+    // Abre o dispositivo de entrada (por exemplo, um mouse)
+    mouse = open(MOUSE_DEV, O_RDONLY);
+    if (mouse == -1) {
+        perror("Erro ao abrir o dispositivo de entrada");
+        exit(EXIT_FAILURE);
+    }
+    int coodx, coody = 0;
+    while (1) {
+        // Lê eventos do dispositivo de entrada
+        if (read(mouse, &ev, sizeof(struct input_event)) == -1) {
+            perror("Erro ao ler evento");
+            exit(EXIT_FAILURE);
+        }
+        if(ev.code == 1){
+            coody += ev.value;
+        }
+        else if(ev.code == 0){  
+            coodx += ev.value;
+        }
+        if(coodx < 0) coodx = 0;
+        if(coodx > 619) coodx= 619;
+        if(coody > 459) coody = 459;
+        if(coody < 0) coody = 0;
+        print_sprite(fd, &dataA, &dataB, 1, coodx, coody, 25, 1);
+        // Processa o evento recebido
+        if (ev.type == EV_REL) {
+            // Eventos de movimento relativo do mouse
+            if (ev.code == REL_X || ev.code == REL_Y) {
+                printf("Movimento relativo: eixo %d, valor %d\n", ev.code, ev.value);
+            } else if (ev.code == REL_WHEEL) {
+                printf("Roda do mouse: valor %d\n", ev.value); //irrelevante
+            }
+        } else if (ev.type == EV_KEY) {
+            // Eventos de botão do mouse
+            if (ev.code == BTN_LEFT || ev.code == BTN_RIGHT || ev.code == BTN_MIDDLE) {
+                if (ev.value == 1)
+                    printf("Botão %d pressionado\n", ev.code);
+            }
+        } 
+    }
+
+    close(mouse);
+
+
         // Buffer para armazenar a leitura do dispositivo
         char buffer[100];
         if (read_device(fd, buffer, sizeof(buffer)) < 0) {
