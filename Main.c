@@ -21,7 +21,81 @@
         int x = 70;
         int y = 50;
         set_background(fd, &dataA,&dataB, 0, 5, 6);
-        //editar_bloco_background(fd, &dataA,&dataB, 0, 400, 3, 5, 6);
+        
+        //primeiro retangulo do cenario
+        for(int i = 16; i <= 49; i++){
+            editar_bloco_background(fd, &dataA,&dataB, 5, i, 7, 7, 7);
+        }
+
+        for(int i = 5; i <= 12; i++){
+            editar_bloco_background(fd, &dataA,&dataB, i, 16, 7, 7, 7);
+        }
+
+        for(int i = 16; i <= 49; i++){
+            editar_bloco_background(fd, &dataA,&dataB, 13, i, 7, 7, 7);
+        }
+
+        for(int i = 5; i <= 12; i++){
+            editar_bloco_background(fd, &dataA,&dataB, i, 47, 7, 7, 7);
+        }
+
+        //preenchimento primeiro retangulo do cenario (parte verde)
+        for(int i = 17; i <= 28; i++){
+            editar_bloco_background(fd, &dataA,&dataB, 6, i, 0, 5, 0);
+        }
+        for(int i = 17; i <= 28; i++){
+            editar_bloco_background(fd, &dataA,&dataB, 7, i, 0, 5, 0);
+        }
+        for(int i = 17; i <= 28; i++){
+            editar_bloco_background(fd, &dataA,&dataB, 8, i, 0, 5, 0);
+        }
+        for(int i = 17; i <= 28; i++){
+            editar_bloco_background(fd, &dataA,&dataB, 9, i, 0, 5, 0);
+        }
+        for(int i = 17; i <= 28; i++){
+            editar_bloco_background(fd, &dataA,&dataB, 10, i, 0, 5, 0);
+        }
+        for(int i = 17; i <= 28; i++){
+            editar_bloco_background(fd, &dataA,&dataB, 11, i, 0, 5, 0);
+        }
+        for(int i = 17; i <= 28; i++){
+            editar_bloco_background(fd, &dataA,&dataB, 12, i, 0, 5, 0);
+        }
+
+        //preenchimento primeiro retangulo do cenario (parte branca)
+        for(int i = 29; i <= 49; i++){
+            editar_bloco_background(fd, &dataA,&dataB, 6, i, 7, 7, 7);
+        }   
+        for(int i = 29; i <= 49; i++){
+            editar_bloco_background(fd, &dataA,&dataB, 7, i, 7, 7, 7);
+        }
+        for(int i = 29; i <= 49; i++){
+            editar_bloco_background(fd, &dataA,&dataB, 8, i, 7, 7, 7);
+        }
+        for(int i = 29; i <= 49; i++){
+            editar_bloco_background(fd, &dataA,&dataB, 9, i, 7, 7, 7);
+        }
+        for(int i = 29; i <= 49; i++){
+            editar_bloco_background(fd, &dataA,&dataB, 10, i, 7, 7, 7);
+        }
+        for(int i = 29; i <= 49; i++){
+            editar_bloco_background(fd, &dataA,&dataB, 11, i, 7, 7, 7);
+        }
+        for(int i = 29; i <= 49; i++){
+            editar_bloco_background(fd, &dataA,&dataB, 12, i, 7, 7, 7);
+        }
+
+        //retangulo deitado branco
+        for(int i = 13; i <= 75; i++){
+            editar_bloco_background(fd, &dataA,&dataB, i, 43, 7, 7, 7);
+        } 
+        for(int i = 13; i <= 75; i++){
+            editar_bloco_background(fd, &dataA,&dataB, i, 49, 7, 7, 7);
+        }
+
+
+
+
         //linha invisivel
         for(int i = 10000;i<10020;i++){
             editar_sprite(fd, &dataA,&dataB,i,6,7,7);
@@ -29,9 +103,6 @@
         for(int i = 10020;i<10040;i++){
             editar_sprite(fd, &dataA,&dataB,i,6,7,7);
         }
-
-
-
 
         for(int i = 10027;i<10033;i++){
             editar_sprite(fd, &dataA,&dataB,i,5,5,0);
