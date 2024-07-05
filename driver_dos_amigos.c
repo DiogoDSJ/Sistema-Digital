@@ -4,7 +4,7 @@
 #include <linux/fs.h>
 #include <linux/cdev.h>
 #include <linux/uaccess.h>
-#include "/home/aluno/TEC499/LabExemples/auxFiles/address_map_arm.h"
+#include "address_map_arm.h"
 #include <asm/io.h>
 
 #define DEVICE_NAME "driver_dos_amigos"
