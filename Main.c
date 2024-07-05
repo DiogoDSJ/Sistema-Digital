@@ -8,6 +8,7 @@
 #include <stdint.h>
 #include <inttypes.h>
 #include <linux/input.h>
+#include <pthread.h>
 
 #define MOUSE_DEV "/dev/input/event0"
 
@@ -18,15 +19,24 @@
         uint32_t dataA = 0;
         uint32_t dataB = 0;
 
-        int x = 70;
-        int y = 50;
-        set_background(fd, &dataA,&dataB, 0, 5, 6);
-        
-        //primeiro retangulo do cenario
-        for(int i = 16; i <= 49; i++){
-            editar_bloco_background(fd, &dataA,&dataB, 5, i, 7, 7, 7);
-        }
+        print_sprite(fd, &dataA, &dataB, 1, 320, 240, 25, 1);
 
+        set_background(fd, &dataA,&dataB, 0, 5, 6);
+        for(int i = 0; i < 80; i++){
+            for(int j = 0; j < 60; j++){
+                editar_bloco_background(fd, &dataA,&dataB, i, j, 6, 7, 7);
+            }
+        }       
+        //primeiro retangulo do cenario, depois da largada verde
+        for(int i = 5; i<= 14; i++){
+            for(int j = 1; j <= 49; j++){
+                editar_bloco_background(fd, &dataA,&dataB, i, j, 7, 7, 7);
+            }
+        }
+        for(int i = 5; i<= 22; i++){
+            editar_bloco_background(fd, &dataA,&dataB, i, 14, 7, 7, 7);
+        }
+    /*
         for(int i = 5; i <= 12; i++){
             editar_bloco_background(fd, &dataA,&dataB, i, 16, 7, 7, 7);
         }
@@ -38,56 +48,49 @@
         for(int i = 5; i <= 12; i++){
             editar_bloco_background(fd, &dataA,&dataB, i, 47, 7, 7, 7);
         }
+    */
 
-        //preenchimento primeiro retangulo do cenario (parte verde)
-        for(int i = 17; i <= 28; i++){
-            editar_bloco_background(fd, &dataA,&dataB, 6, i, 0, 5, 0);
+        //parte da entrada
+        for(int j = 1; j <= 13; j++){
+            editar_bloco_background(fd, &dataA,&dataB, 14, j, 7, 7, 7);
+            for(int i = 15; i<= 21; i++){
+                editar_bloco_background(fd, &dataA,&dataB, i, 1, 7, 7, 7);
+            } 
+            for(int i = 15; i<= 21; i++){
+                editar_bloco_background(fd, &dataA,&dataB, i, j, 0, 5, 0);
+            }
+            editar_bloco_background(fd, &dataA,&dataB, 22, j, 7, 7, 7);
         }
+        //parte da saída
         for(int i = 17; i <= 28; i++){
-            editar_bloco_background(fd, &dataA,&dataB, 7, i, 0, 5, 0);
+            editar_bloco_background(fd, &dataA,&dataB, 70, i, 7, 7, 7);
+            for(int j = 70; j<= 78; j++){
+                editar_bloco_background(fd, &dataA,&dataB, j, 17, 7, 7, 7);
+            }
+            for(int j = 71; j<= 77; j++){
+                editar_bloco_background(fd, &dataA,&dataB, j, i, 7, 0, 0);
+            }
+            editar_bloco_background(fd, &dataA,&dataB, 78, i, 7, 7, 7);
         }
-        for(int i = 17; i <= 28; i++){
-            editar_bloco_background(fd, &dataA,&dataB, 8, i, 0, 5, 0);
-        }
-        for(int i = 17; i <= 28; i++){
-            editar_bloco_background(fd, &dataA,&dataB, 9, i, 0, 5, 0);
-        }
-        for(int i = 17; i <= 28; i++){
-            editar_bloco_background(fd, &dataA,&dataB, 10, i, 0, 5, 0);
-        }
-        for(int i = 17; i <= 28; i++){
-            editar_bloco_background(fd, &dataA,&dataB, 11, i, 0, 5, 0);
-        }
-        for(int i = 17; i <= 28; i++){
-            editar_bloco_background(fd, &dataA,&dataB, 12, i, 0, 5, 0);
-        }
+
 
         //preenchimento primeiro retangulo do cenario (parte branca)
-        for(int i = 29; i <= 49; i++){
-            editar_bloco_background(fd, &dataA,&dataB, 6, i, 7, 7, 7);
-        }   
-        for(int i = 29; i <= 49; i++){
-            editar_bloco_background(fd, &dataA,&dataB, 7, i, 7, 7, 7);
+        for(int i = 5; i <= 24; i++){
+            for(int j = 29; j <= 50; j++){
+                editar_bloco_background(fd, &dataA,&dataB, i, j, 7, 7, 7);
+            }
         }
-        for(int i = 29; i <= 49; i++){
-            editar_bloco_background(fd, &dataA,&dataB, 8, i, 7, 7, 7);
+        for(int i = 60; i <= 78; i++){
+            for(int j = 29; j <= 50; j++){
+                editar_bloco_background(fd, &dataA,&dataB, i, j, 7, 7, 7);
+            }
         }
-        for(int i = 29; i <= 49; i++){
-            editar_bloco_background(fd, &dataA,&dataB, 9, i, 7, 7, 7);
-        }
-        for(int i = 29; i <= 49; i++){
-            editar_bloco_background(fd, &dataA,&dataB, 10, i, 7, 7, 7);
-        }
-        for(int i = 29; i <= 49; i++){
-            editar_bloco_background(fd, &dataA,&dataB, 11, i, 7, 7, 7);
-        }
-        for(int i = 29; i <= 49; i++){
-            editar_bloco_background(fd, &dataA,&dataB, 12, i, 7, 7, 7);
-        }
-
         //retangulo deitado branco
-        for(int i = 13; i <= 75; i++){
-            editar_bloco_background(fd, &dataA,&dataB, i, 43, 7, 7, 7);
+
+        for(int i = 25; i <= 59; i++){
+            for(int j = 43; j <= 50; j++){
+                editar_bloco_background(fd, &dataA,&dataB, i, j, 7, 7, 7);
+            }
         } 
         for(int i = 13; i <= 75; i++){
             editar_bloco_background(fd, &dataA,&dataB, i, 49, 7, 7, 7);
@@ -204,7 +207,6 @@
             }   
         }
     
-        print_sprite(fd, &dataA, &dataB, 1, 320, 240, 25, 1);
 
     int mouse;
     struct input_event ev;
