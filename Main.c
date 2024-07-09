@@ -90,19 +90,7 @@
             for(int i = 5; i<= 22; i++){
                 editar_bloco_background(fd, &dataA,&dataB, i, 14, 7, 7, 7);
             }
-        /*
-            for(int i = 5; i <= 12; i++){
-                editar_bloco_background(fd, &dataA,&dataB, i, 16, 7, 7, 7);
-            }
-
-            for(int i = 16; i <= 49; i++){
-                editar_bloco_background(fd, &dataA,&dataB, 13, i, 7, 7, 7);
-            }
-
-            for(int i = 5; i <= 12; i++){
-                editar_bloco_background(fd, &dataA,&dataB, i, 47, 7, 7, 7);
-            }
-        */
+  
 
             //parte da entrada
             for(int j = 1; j <= 13; j++){
@@ -261,81 +249,7 @@
                 }   
             }
         
-    /*
-        int mouse;
-        struct input_event ev;
-
-        printf("Iniciando leitura de eventos do mouse...\n");
-
-        // Abre o dispositivo de entrada (por exemplo, um mouse)
-        mouse = open(MOUSE_DEV, O_RDONLY);
-        if (mouse == -1) {
-            perror("Erro ao abrir o dispositivo de entrada");
-            exit(EXIT_FAILURE);
-        }
-        int coodx = 50, coody = 50;
-        while (1) {
-            // Lê eventos do dispositivo de entrada
-            if (read(mouse, &ev, sizeof(struct input_event)) == -1) {
-                perror("Erro ao ler evento");
-                exit(EXIT_FAILURE);
-            }
-            if(ev.code == 1){
-                coody += ev.value;
-            }
-            else if(ev.code == 0){  
-                coodx += ev.value;
-            }
-
-            //colisao do monitor
-            if(coodx < 0) coodx = 0;
-            if(coodx > 619) coodx= 619;
-            if(coody > 459) coody = 459;
-            if(coody < 0) coody = 0;
-
-            //colisao muro esquerdo
-            if(coodx <= 37){
-                coodx -= ev.value;
-            }
-            //colisao muro direito
-        
-            
-            if((coody <= 6 || coody > 100) && coodx >= 164){
-                coodx -= ev.value;
-                if(ev.code == 0) coody -= ev.value;
-            } 
-            // colisao teto
-            if(coody <= 6){
-                coody -= ev.value;
-            }
-            // colisao chao de la de baixo
-            if(coody >= 389){
-                coody -= ev.value;
-            }
-            if((coody <= 343 || coody >= 389) && (coodx > 179 && coodx < 480)) { // 343 e 389{
-                coody -= ev.value;
-            }
-            printf("x: %d, y: %d\n", coodx, coody);
-            print_sprite(fd, &dataA, &dataB, 1, coodx, coody, 25, 1);
-            // Processa o evento recebido
-            if (ev.type == EV_REL) {
-                // Eventos de movimento relativo do mouse
-                if (ev.code == REL_X || ev.code == REL_Y) {
-                    printf("Movimento relativo: eixo %d, valor %d\n", ev.code, ev.value);
-                } else if (ev.code == REL_WHEEL) {
-                    printf("Roda do mouse: valor %d\n", ev.value); //irrelevante
-                }
-            } else if (ev.type == EV_KEY) {
-                // Eventos de botão do mouse
-                if (ev.code == BTN_LEFT || ev.code == BTN_RIGHT || ev.code == BTN_MIDDLE) {
-                    if (ev.value == 1)
-                        printf("Botão %d pressionado\n", ev.code);
-                }
-            } 
-        }
-
-        close(mouse);
-        */  
+    
         main_mouse();
 
             // Buffer para armazenar a leitura do dispositivo
