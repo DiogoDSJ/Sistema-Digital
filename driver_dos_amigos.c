@@ -34,13 +34,11 @@ static void *LW_virtual;
 
 // Função chamada quando o dispositivo é aberto
 static int dev_open(struct inode* inodep, struct file* filep) {
-    printk(KERN_INFO "ar_deivice: Device has been opened.\n");
     return 0;
 }
 
 // Função chamada quando o dispositivo é fechado
 static int dev_release(struct inode* inodep, struct file* filep) {
-    printk(KERN_INFO "ar_deivice: Device successfully closed.\n");
     return 0;
 }
 
@@ -53,12 +51,10 @@ void separarInteiros(const char *str, uint32_t *num1, uint32_t *num2) {
             break;
         } 
         *num1 = *num1 * 10 + (str[i] - '0');
-        printk("num1: %u\n", *num1);
         i++;
     }
     while (str[i] != '\0') {
         *num2 = *num2 * 10 + (str[i] - '0');
-        printk("num2: %u\n", *num2);
         i++;
     }
 }
@@ -90,7 +86,7 @@ static ssize_t dev_read(struct file* filep, char* buffer, size_t len, loff_t* of
     // Atualiza o offset para refletir a nova posição de leitura
     *offset += bytes_read;
     // Retorna o número de bytes lidos
-    return bytes_read;
+    return bytes_read;  
 }
 
 
@@ -101,7 +97,6 @@ static ssize_t dev_write(struct file* file, const char* buffer_user, size_t buff
     // Enquanto FIFO estiver cheia, espera
     while (*wrfull_ptr) {}
     ret = copy_from_user(mensagem_principal, buffer_user, buffer_bytes);        
-    printk(KERN_INFO "mensagemp %s, buffer user %s\n", mensagem_principal, buffer_user);
     // Caso ret seja diferente de 0, retorna bytes que não foram copiados
     if (ret) {
         pr_err("%s: falha ao ler a mensagem do usuario \n", DEVICE_NAME);
@@ -136,20 +131,15 @@ static struct file_operations fops = {
 
 // Função chamada na inicialização do módulo
 static int __init ModuleInit(void) {
-    printk(KERN_INFO "Modulo está iniciano agora...\n");
-
     // Registra um dispositivo de caractere e obtém um número principal
     major_number = register_chrdev(0, DEVICE_NAME, &fops);
     if (major_number < 0) {
-        printk(KERN_ALERT "ar_deivice failed to register a major number.\n");
         return major_number;
     }
-    printk(KERN_INFO "ar_deivice: registered correctly with major number %d.\n", major_number);
     
     // Mapeia a ponte leve para o espaço de endereços virtuais do kernel
     LW_virtual = ioremap_nocache(LW_BRIDGE_BASE, LW_BRIDGE_SPAN);
     if (!LW_virtual) {
-        printk(KERN_ERR "Erro: falha ao mapear a ponte leve\n");
         return -ENOMEM;
     }
 
@@ -159,7 +149,6 @@ static int __init ModuleInit(void) {
     START_PTR = (volatile int *)(LW_virtual + START);
     wrfull_ptr = (int*) (LW_virtual + WRFULL);
 
-    printk(KERN_INFO "fim do modulo agora...\n");
     return 0;
 }
 
@@ -169,7 +158,6 @@ static void __exit ModuleExit(void) {
     // Desmapeia a ponte leve
     iounmap(LW_virtual);
 
-    printk(KERN_INFO "adeus\n");
 }
 
 // Macros para definir funções de inicialização e saída do módulo
