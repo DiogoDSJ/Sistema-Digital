@@ -78,17 +78,17 @@
                 else coody -= ev.value;
             }   // 544 e y 230
                 // 478 e y 388
-            if((coodx >= 613) && (coody > 132 && coody <= 389)){
-                if(ev.code == 0) coodx -= ev.value;
-                else coody -= ev.value;
-            }
             if((coodx > 470 && coodx < 559) && (coody > 205 && coody < 230)){
                 if(ev.code == 0) coodx -= ev.value;
                 else coody -= ev.value;
             }
-            if((coodx > 550 && coodx < 630) && (coody < 134 && coody > 100 )){
+            if((coodx > 500 && coodx < 550) && (coody < 134)){
                 if(ev.code == 0) coodx -= ev.value;
                 else coody -= ev.value;
+            }
+            if((coodx > 549 && coodx < 613) && (coody < 134)){
+                if(ev.code == 0) coodx = 614;
+                else coody = 134;
             }
             if((coodx > 470 && coodx <= 477) && (coody > 230 && coody < 340)){
                 if(ev.code == 0) coodx -= ev.value;
@@ -102,10 +102,17 @@
             if(coody >= 389){
                 coody -= ev.value;
             }
-            if((coody <= 342 || coody >= 389) && (coodx > 181 && coodx < 480)) { // 343 e 389{
-                coody -= ev.value;
+            if((coody <= 342 || coody >= 389) && (coodx > 181 && coodx < 478)) { // 343 e 389{
+                if(ev.code == 0) coodx -= ev.value;
+                else coody -= ev.value;
             }
-
+            if((coody < 213 && coody > 120) && (coodx < 556 & coodx > 350)){
+                if(ev.code == 0) coodx -= ev.value;
+                else coody -= ev.value;
+            }
+            if(coodx > 613){
+                coodx = 612;
+            }
 
             //ultima parte
 
@@ -165,18 +172,23 @@
         // Set virtual address pointer to I/O port
         KEY_ptr = (int *)(LW_virtual + 0x0);
 
-        int estado = 1;
+        int estado = 0;
             
         while(1){
 
-            if (*KEY_ptr == 15 && estado == 0){
+            if (*KEY_ptr == 14 && estado == 0){
                 printf("clicou\n");
                 estado = 1;
             } 
-            if (estado == 1 && *KEY_ptr != 15){
+            if (estado == 1 && *KEY_ptr != 14){
                 estado = 0;
             }
+
+
+
+
             
+            //printf("%d\n",*KEY_ptr);
         }
         
         
@@ -237,9 +249,9 @@
 
             
 
-            print_sprite(fd, &dataA, &dataB, 1, 100, 240, 2, 1);
+            //print_sprite(fd, &dataA, &dataB, 1, 138, 58, 2, 1);
 
-            print_sprite(fd, &dataA, &dataB, 1, 320, 240, 25, 1);
+            print_sprite(fd, &dataA, &dataB, 1, 138, 58, 25, 1);
             set_background(fd, &dataA,&dataB, 0, 5, 6);
             /*
             
@@ -517,6 +529,3 @@
             close_device(fd); 
             return EXIT_SUCCESS;
         }
-
-
-
