@@ -10,7 +10,7 @@
     #include <linux/input.h>
     #include <pthread.h>
     #include <semaphore.h>
-
+    #include <time.h>
     #include <sys/mman.h>
     #include "address_map_arm.h"
                 
@@ -20,14 +20,13 @@
     uint32_t dataA = 0;
     uint32_t dataB = 0;
 
-
+    pthread_mutex_t mutex;
 
     #define MOUSE_DEV "/dev/input/event0"
 
     int fd;
     void *mousefik(void *arg){
         //sem_wait(&semaforo);
-       
 
         int mouse;
         struct input_event ev;
@@ -118,7 +117,9 @@
             //ultima parte
 
             printf("x: %d, y: %d\n", coodx, coody);
+            pthread_mutex_lock(&mutex); 
             print_sprite(fd, &dataA, &dataB, 1, coodx, coody, 25, 1);
+            pthread_mutex_unlock(&mutex); 
             // Processa o evento recebido
             if (ev.type == EV_REL) {
                 // Eventos de movimento relativo do mouse
@@ -202,26 +203,160 @@
 
 
     }
+    
+
+
+void *obstaculo(){
+    //sem_wait(&semaforo);
+    struct timespec interval = {0, 5000000};
+   
+    //retandulo pequeno vertical
+    int obstaculo_x_1 = 40; // Posição inicial do obstáculo
+    int obstaculo_y_1 = 140; // Posição inicial do obstáculo
+    int obstaculo_x_2 = 40; 
+    int obstaculo_y_2 = 200;
+
+
+    //retangulo pequeno horizontal
+    int obstaculo_x_3 = 215; 
+    int obstaculo_y_3 = 343;
+
+    int obstaculo_x_4 = 325; 
+    int obstaculo_y_4 = 343;
+
+    int obstaculo_x_5 = 435; 
+    int obstaculo_y_5 = 343;
+
+
+    while(1){
+        //sprite 1
+        int distancia_sprite_1 = 49;
+
+        for (int i = 0; i < (distancia_sprite_1 * 2); i++){
+            
+            pthread_mutex_lock(&mutex); 
+            print_sprite(fd, &dataA, &dataB, 1, obstaculo_x_1, obstaculo_y_1, 1, 3); //colocar para printar sprite aq
+            print_sprite(fd, &dataA, &dataB, 1, obstaculo_x_2, obstaculo_y_2, 1, 5); //colocar para printar sprite aq
+            print_sprite(fd, &dataA, &dataB, 1, obstaculo_x_3, obstaculo_y_3, 1, 6);
+            print_sprite(fd, &dataA, &dataB, 1, obstaculo_x_4, obstaculo_y_4, 1, 7);
+            print_sprite(fd, &dataA, &dataB, 1, obstaculo_x_5, obstaculo_y_5, 1, 8);
+            pthread_mutex_unlock(&mutex); 
+
+            if (i < distancia_sprite_1){
+                obstaculo_x_1 += 1;
+                obstaculo_x_2 += 1;
+                obstaculo_y_3 +=1; 
+                obstaculo_y_4 +=1;
+                obstaculo_y_5 +=1; 
+
+                
+            }
+
+            else{
+                obstaculo_x_1 -= 1;
+                obstaculo_x_2 -= 1;
+                obstaculo_y_3 -=1;
+                obstaculo_y_4 -=1;
+                obstaculo_y_5 -=1; 
+               
+            }
+       
+            nanosleep(&interval, NULL);
+        }
+        
+    }
+    pthread_exit(NULL);
+    return 0;
+}
+
+
+
+
+void *obstaculo_velocidade_diferente(){
+  
+    struct timespec interval = {0, 2000000};
+ 
+    //retandulo pequeno vertical
+    int obstaculo_x_7 = 40; // Posição inicial do obstáculo
+    int obstaculo_y_7 = 260; // Posição inicial do obstáculo
+    
+    int obstaculo_x_8 = 40; 
+    int obstaculo_y_8 = 320;
+
+
+
+    int obstaculo_x_9 = 478; // Posição inicial do obstáculo
+    int obstaculo_y_9 = 260; // Posição inicial do obstáculo
+    
+    int obstaculo_x_10 = 478; 
+    int obstaculo_y_10 = 320;
+
+
+
+    while(1){
+        //sprite 1
+        int distancia_sprite_1 = 140;
+
+        for (int i = 0; i < (distancia_sprite_1 * 2); i++){
+            
+            pthread_mutex_lock(&mutex); 
+            print_sprite(fd, &dataA, &dataB, 1, obstaculo_x_7, obstaculo_y_7, 1, 11); //colocar para printar sprite aq
+            print_sprite(fd, &dataA, &dataB, 1, obstaculo_x_8, obstaculo_y_8, 1, 10);
+            print_sprite(fd, &dataA, &dataB, 1, obstaculo_x_9, obstaculo_y_9, 1, 12);
+            print_sprite(fd, &dataA, &dataB, 1, obstaculo_x_10, obstaculo_y_10, 1, 13);
+            pthread_mutex_unlock(&mutex);
+
+
+
+            if (i < distancia_sprite_1){
+                obstaculo_x_7 += 1;
+                obstaculo_x_8 += 1;
+                obstaculo_x_9 += 1;
+                obstaculo_x_10 += 1;
+                
+        
+            }
+
+            else{
+                obstaculo_x_7 -= 1;
+                obstaculo_x_8 -= 1; 
+                obstaculo_x_9 -= 1;
+                obstaculo_x_10 -= 1;
+            }
+       
+            nanosleep(&interval, NULL);
+        }
+        
+    }
+
+    return 0;
+    pthread_exit(NULL);
+}
+
 
 
 
     int main_mouse(){
-        //sem_init(&semaforo, 0, 1);
+        //sem_init(&semaforo, 0, 1);        
+        pthread_mutex_init(&mutex, NULL);
+
+        
         pthread_create(&(threads[0]),NULL,mousefik,NULL);
         pthread_create(&(threads[1]),NULL,botao,NULL);
-        //pthread_create(&(threads[2]),NULL,obstaculo,NULL);
+        pthread_create(&(threads[2]),NULL,obstaculo,NULL);
+        pthread_create(&(threads[3]),NULL,obstaculo_velocidade_diferente,NULL);
 
 
         pthread_join(threads[0],NULL);
         pthread_join(threads[1],NULL);
-       // pthread_join(threads[2],NULL);
+        pthread_join(threads[2],NULL);
+        pthread_join(threads[3],NULL);
 
-        
-    
+        pthread_mutex_destroy(&mutex);  
         return 0;
 
     }
-        
+
 
         int main() {
             const char *device_path = "/dev/driver_dos_amigos"; 
