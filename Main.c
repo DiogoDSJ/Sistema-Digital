@@ -21,6 +21,7 @@
     uint32_t dataB = 0;
 
     pthread_mutex_t mutex;
+    int coodx = 50, coody = 50;
 
     #define MOUSE_DEV "/dev/input/event0"
 
@@ -39,7 +40,7 @@
             perror("Erro ao abrir o dispositivo de entrada");
             exit(EXIT_FAILURE);
         }
-        int coodx = 50, coody = 50;
+        
         while (1) {
             // Lê eventos do dispositivo de entrada
             if (read(mouse, &ev, sizeof(struct input_event)) == -1) {
@@ -147,8 +148,6 @@
 
 
 
-
-
     void *botao(void *arg){
         //sem_wait(&semaforo);
 
@@ -184,9 +183,6 @@
             if (estado == 1 && *KEY_ptr != 14){
                 estado = 0;
             }
-
-
-
 
         }
         
@@ -235,8 +231,8 @@ void *obstaculo(){
         for (int i = 0; i < (distancia_sprite_1 * 2); i++){
             
             pthread_mutex_lock(&mutex); 
-            print_sprite(fd, &dataA, &dataB, 1, obstaculo_x_1, obstaculo_y_1, 1, 3); //colocar para printar sprite aq
-            print_sprite(fd, &dataA, &dataB, 1, obstaculo_x_2, obstaculo_y_2, 1, 5); //colocar para printar sprite aq
+            print_sprite(fd, &dataA, &dataB, 1, obstaculo_x_1, obstaculo_y_1, 1, 3); 
+            print_sprite(fd, &dataA, &dataB, 1, obstaculo_x_2, obstaculo_y_2, 1, 5); 
             print_sprite(fd, &dataA, &dataB, 1, obstaculo_x_3, obstaculo_y_3, 1, 6);
             print_sprite(fd, &dataA, &dataB, 1, obstaculo_x_4, obstaculo_y_4, 1, 7);
             print_sprite(fd, &dataA, &dataB, 1, obstaculo_x_5, obstaculo_y_5, 1, 8);
@@ -260,6 +256,39 @@ void *obstaculo(){
                 obstaculo_y_5 -=1; 
                
             }
+
+            //COLISAO sprite 1 do retangulo vertical
+            if(obstaculo_x_1 <= coodx+20 && obstaculo_x_1 + 20 > coodx && obstaculo_y_1 < coody+20 && obstaculo_y_1+20> coody){
+                printf("TEVE COLISAO\n");
+                coodx = 139;coody = 54;
+            }
+
+            //COLISAO sprite 2 do retangulo vertical
+            if(obstaculo_x_2 <= coodx+20 && obstaculo_x_2 + 20 > coodx && obstaculo_y_2 < coody+20 && obstaculo_y_2+20> coody){
+                printf("TEVE COLISAO\n");
+                coodx = 139;coody = 54;
+            }
+
+            //COLISAO sprite 3 do retangulo horizontal
+            if(obstaculo_x_3 <= coodx+20 && obstaculo_x_3 + 20 > coodx && obstaculo_y_3 < coody+20 && obstaculo_y_3+20> coody){
+                printf("TEVE COLISAO\n");
+                coodx = 139;coody = 54;
+            }
+
+            //COLISAO sprite 4 do retangulo horizontal
+            if(obstaculo_x_4 <= coodx+20 && obstaculo_x_4 + 20 > coodx && obstaculo_y_4 < coody+20 && obstaculo_y_4+20> coody){
+                printf("TEVE COLISAO\n");
+                coodx = 139;coody = 54;
+            }
+
+            //COLISAO sprite 5 do retangulo horizontal
+            if(obstaculo_x_5 <= coodx+20 && obstaculo_x_5 + 20 > coodx && obstaculo_y_5 < coody+20 && obstaculo_y_5+20> coody){
+                printf("TEVE COLISAO\n");
+                coodx = 139;coody = 54;
+            }
+
+
+
        
             nanosleep(&interval, NULL);
         }
@@ -324,6 +353,33 @@ void *obstaculo_velocidade_diferente(){
                 obstaculo_x_10 -= 1;
             }
        
+            //COLISAO 1 SPRITE DO QUADRADO DA ESQUERDA
+            if(obstaculo_x_7 <= coodx+20 && obstaculo_x_7 + 20 > coodx && obstaculo_y_7 < coody+20 && obstaculo_y_7+20> coody){
+                printf("TEVE COLISAO\n");
+                coodx = 139;coody = 54;
+            }
+
+            //COLISAO 2 SPRITE DO QUADRADO DA ESQUERDA
+            if(obstaculo_x_8 <= coodx+20 && obstaculo_x_8 + 20 > coodx && obstaculo_y_8 < coody+20 && obstaculo_y_8+20> coody){
+                printf("TEVE COLISAO\n");
+                coodx = 139;coody = 54;
+            }
+
+
+            //COLISAO 4 SPRITE DO QUADRADO DA DIREITA
+            if(obstaculo_x_9 <= coodx+20 && obstaculo_x_9 + 20 > coodx && obstaculo_y_9 < coody+20 && obstaculo_y_9+20> coody){
+                printf("TEVE COLISAO\n");
+                coodx = 139;coody = 54;
+            }
+
+
+            //COLISAO 5 SPRITE DO QUADRADO DA DIREITA
+            if(obstaculo_x_10 <= coodx+20 && obstaculo_x_10 + 20 > coodx && obstaculo_y_10 < coody+20 && obstaculo_y_10+20> coody){
+                printf("TEVE COLISAO\n");
+                coodx = 139;coody = 54;
+            }
+
+
             nanosleep(&interval, NULL);
         }
         
