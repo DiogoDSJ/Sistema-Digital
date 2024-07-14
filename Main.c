@@ -13,22 +13,50 @@
     #include <time.h>
     #include <sys/mman.h>
     #include "address_map_arm.h"
-                
+
+
 
             
     pthread_t threads[10];
     uint32_t dataA = 0;
     uint32_t dataB = 0;
+    int colidiu = 0;
+
+    int diminuir_display = 3;
 
     pthread_mutex_t mutex;
-    int coodx = 50, coody = 50;
+    int coodx = 136, coody = 58;
+
+
+    int loop1 = 1;
+
 
     #define MOUSE_DEV "/dev/input/event0"
+
+    #define HEX5_BASE 0x10
+#define HEX4_BASE 0x20
+#define HEX3_BASE 0x30
+#define HEX2_BASE 0x40
+#define HEX1_BASE 0x50
+#define HEX0_BASE 0x60
+
+
+
+
+
+//Ponteiro de endereço virtual para os digitos do display de 7seg
+volatile int *HEX5_ptr;
+volatile int *HEX4_ptr;
+volatile int *HEX3_ptr;
+volatile int *HEX2_ptr;
+volatile int *HEX1_ptr;
+volatile int *HEX0_ptr;
+
+
 
     int fd;
     void *mousefik(void *arg){
         //sem_wait(&semaforo);
-
         int mouse;
         struct input_event ev;
 
@@ -40,18 +68,28 @@
             perror("Erro ao abrir o dispositivo de entrada");
             exit(EXIT_FAILURE);
         }
-        
         while (1) {
             // Lê eventos do dispositivo de entrada
             if (read(mouse, &ev, sizeof(struct input_event)) == -1) {
-                perror("Erro ao ler evento");
-                exit(EXIT_FAILURE);
+                /*perror("Erro ao ler evento");
+                printf("teste");
+                //exit(EXIT_FAILURE);*/
+                if (errno == EWOULDBLOCK) {
+                    //printf("No data available for non-blocking read.\n");
+                    // Handle scenario where no data is immediately available
+                } else {
+                    perror("read");
+                    return 1;
+                }
             }
-            if(ev.code == 1){
-                coody += ev.value;
-            }
-            else if(ev.code == 0){  
-                coodx += ev.value;
+            
+            if(colidiu != 1){
+                if(ev.code == 1){
+                    coody += ev.value;
+                }
+                else if(ev.code == 0){  
+                    coodx += ev.value;
+                }
             }
 
             //colisao do monitor
@@ -114,7 +152,6 @@
             if(coodx > 613){
                 coodx = 612;
             }
-
             //ultima parte
 
             printf("x: %d, y: %d\n", coodx, coody);
@@ -140,11 +177,21 @@
         }
 
         close(mouse);
+        pthread_exit(NULL);
+
 
         
     }
 
+    void setar(void){
+        coodx = 139;coody = 54;
+        pthread_mutex_unlock(&mutex); 
+        print_sprite(fd, &dataA, &dataB, 1, coodx, coody, 25, 1); 
+        *HEX0_ptr = 0b0110000;
+        pthread_mutex_unlock(&mutex); 
+        diminuir_display = 3;
 
+    }
 
 
 
@@ -178,13 +225,31 @@
         while(1){
 
             if (*KEY_ptr == 14 && estado == 0){
-                printf("Botao KEY 0 foi clicado\n");
-                
-                coodx = 139;coody = 54;
-                print_sprite(fd, &dataA, &dataB, 1, coodx, coody, 25, 1);
+                printf("Botao KEY 0 foi clicado para reiniciar \n");
+
+                pthread_cancel(threads[0]);
+                pthread_cancel(threads[2]);
+                pthread_cancel(threads[3]);
+                //pthread_cancel(threads[1]);
+                pthread_cancel(threads[4]);
+                setar();
+                jogo();
                 estado = 1;
                
-            } 
+            }
+
+            if(*KEY_ptr == 13 && estado == 0) {
+                printf("Botao KEY 0 foi clicado para zerar \n");
+                zerar_tudo();
+                estado = 1;
+
+            }
+
+            if(*KEY_ptr == 11 && estado == 0){
+                printf("Botao KEY 0 foi clicado para setar \n");
+                setar();   
+                estado = 1;
+            }
             if (estado == 1 && *KEY_ptr != 14){
                 estado = 0;
             }
@@ -209,11 +274,12 @@
 
 void *obstaculo(){
     //sem_wait(&semaforo);
-    struct timespec interval = {0, 5000000};
+    struct timespec interval = {0, 2000000};
    
     //retandulo pequeno vertical
+     // Posição inicial do obstáculo
     int obstaculo_x_1 = 40; // Posição inicial do obstáculo
-    int obstaculo_y_1 = 140; // Posição inicial do obstáculo
+    int obstaculo_y_1 = 140;
     int obstaculo_x_2 = 40; 
     int obstaculo_y_2 = 200;
 
@@ -227,12 +293,13 @@ void *obstaculo(){
 
     int obstaculo_x_5 = 435; 
     int obstaculo_y_5 = 343;
+    
 
-
-    while(1){
+    while(loop1){
         //sprite 1
-        int distancia_sprite_1 = 49;
-
+        int distancia_sprite_1 = 20;
+        int distancia_y = 20;
+        colidiu = 0;
         for (int i = 0; i < (distancia_sprite_1 * 2); i++){
             
             pthread_mutex_lock(&mutex); 
@@ -244,29 +311,49 @@ void *obstaculo(){
             pthread_mutex_unlock(&mutex); 
 
             if (i < distancia_sprite_1){
-                obstaculo_x_1 += 1;
-                obstaculo_x_2 += 1;
-                obstaculo_y_3 +=1; 
-                obstaculo_y_4 +=1;
-                obstaculo_y_5 +=1; 
-
-                
+                obstaculo_x_1 += 3;
+                obstaculo_x_2 += 3;
+            }
+            else{
+                obstaculo_x_1 -= 3;
+                obstaculo_x_2 -= 3;
+ 
+            }
+            if(obstaculo_x_1 == 40){
+                while(obstaculo_y_1 < 160){
+                    obstaculo_y_1 += 1;
+                    obstaculo_y_2 += 1;
+                }
+            }
+            else if(obstaculo_x_2 == 100){
+                while(obstaculo_y_1 > 140){
+                    obstaculo_y_1 -= 1;
+                    obstaculo_y_2 -= 1;
+                }
             }
 
-            else{
-                obstaculo_x_1 -= 1;
-                obstaculo_x_2 -= 1;
-                obstaculo_y_3 -=1;
-                obstaculo_y_4 -=1;
-                obstaculo_y_5 -=1; 
-               
+            if(i < distancia_y && i < 40){
+                obstaculo_y_3 +=2; 
+                obstaculo_y_4 +=2;
+                obstaculo_y_5 +=2; 
+            }
+            else if(i < 40){
+                obstaculo_y_3 -=2;
+                obstaculo_y_4 -=2;
+                obstaculo_y_5 -=2;
             }
 
             //COLISAO sprite 1 do retangulo vertical
             if(obstaculo_x_1 <= coodx+20 && obstaculo_x_1 + 20 > coodx && obstaculo_y_1 < coody+20 && obstaculo_y_1+20> coody){
-                printf("TEVE COLISAO\n");
                 coodx = 139;coody = 54;
                 print_sprite(fd, &dataA, &dataB, 1, coodx, coody, 25, 1);
+                colidiu = 1;
+
+                printf("TEVE COLISAO\n");
+                diminuir_display-=1;
+                printf("variavel reduzida\n");
+                alterar_display();
+                printf("reduzido no display\n");
             }
 
             //COLISAO sprite 2 do retangulo vertical
@@ -274,6 +361,11 @@ void *obstaculo(){
                 printf("TEVE COLISAO\n");
                 coodx = 139;coody = 54;
                 print_sprite(fd, &dataA, &dataB, 1, coodx, coody, 25, 1);
+                colidiu = 1;
+
+                diminuir_display-=1;
+                alterar_display();
+                printf("teste;");
             }
 
             //COLISAO sprite 3 do retangulo horizontal
@@ -281,6 +373,11 @@ void *obstaculo(){
                 printf("TEVE COLISAO\n");
                 coodx = 139;coody = 54;
                 print_sprite(fd, &dataA, &dataB, 1, coodx, coody, 25, 1);
+                colidiu = 1;
+
+                diminuir_display-=1;
+                alterar_display();
+                printf("teste;");
             }
 
             //COLISAO sprite 4 do retangulo horizontal
@@ -288,6 +385,11 @@ void *obstaculo(){
                 printf("TEVE COLISAO\n");
                 coodx = 139;coody = 54;
                 print_sprite(fd, &dataA, &dataB, 1, coodx, coody, 25, 1);
+                colidiu = 1;
+
+                diminuir_display-=1;
+                alterar_display();
+                printf("teste;");
             }
 
             //COLISAO sprite 5 do retangulo horizontal
@@ -295,14 +397,20 @@ void *obstaculo(){
                 printf("TEVE COLISAO\n");
                 coodx = 139;coody = 54;
                 print_sprite(fd, &dataA, &dataB, 1, coodx, coody, 25, 1);
+                colidiu = 1;
+
+                diminuir_display-=1;
+                alterar_display();
+                printf("teste;");
             }
-
-
-       
+            
+            
+            
             nanosleep(&interval, NULL);
         }
         
     }
+   //
     pthread_exit(NULL);
     return 0;
 }
@@ -364,9 +472,15 @@ void *obstaculo_velocidade_diferente(){
        
             //COLISAO 1 SPRITE DO QUADRADO DA ESQUERDA
             if(obstaculo_x_7 <= coodx+20 && obstaculo_x_7 + 20 > coodx && obstaculo_y_7 < coody+20 && obstaculo_y_7+20> coody){
-                printf("TEVE COLISAO\n");
+                
                 coodx = 139;coody = 54;
                 print_sprite(fd, &dataA, &dataB, 1, coodx, coody, 25, 1);
+
+                printf("TEVE COLISAO\n");
+                diminuir_display-=1;
+                printf("variavel reduzida\n");
+                alterar_display();
+                printf("reduzido no display\n");
             }
 
             //COLISAO 2 SPRITE DO QUADRADO DA ESQUERDA
@@ -374,6 +488,9 @@ void *obstaculo_velocidade_diferente(){
                 printf("TEVE COLISAO\n");
                 coodx = 139;coody = 54;
                 print_sprite(fd, &dataA, &dataB, 1, coodx, coody, 25, 1);
+
+                diminuir_display-=1;
+                alterar_display();
             }
 
 
@@ -382,6 +499,9 @@ void *obstaculo_velocidade_diferente(){
                 printf("TEVE COLISAO\n");
                 coodx = 139;coody = 54;
                 print_sprite(fd, &dataA, &dataB, 1, coodx, coody, 25, 1);
+
+                diminuir_display-=1;
+                alterar_display();
             }
 
 
@@ -390,6 +510,9 @@ void *obstaculo_velocidade_diferente(){
                 printf("TEVE COLISAO\n");
                 coodx = 139;coody = 54;
                 print_sprite(fd, &dataA, &dataB, 1, coodx, coody, 25, 1);
+
+                diminuir_display-=1;
+                alterar_display();
             }
 
 
@@ -399,9 +522,212 @@ void *obstaculo_velocidade_diferente(){
     }
 
     return 0;
-    pthread_exit(NULL);
+   pthread_exit(NULL);
 }
 
+
+
+
+    void *display(void *arg){
+        //Usado para abrir /dev/mem
+    int fd = -1;
+
+    //Endereços físicos para a ponte (light-weight bridge)
+    void *LW_virtual;
+        // Abrir /dev/mem para dar acesso a endereços físicos
+        if ((fd = open("/dev/mem", (O_RDWR | O_SYNC))) == -1) {
+            printf("ERROR: could not open \"/dev/mem\"...\n");
+            return (-1);
+        }
+
+        // Obter um mapeamento de endereços físicos para endereços virtuais
+        LW_virtual = mmap(NULL, LW_BRIDGE_SPAN, (PROT_READ | PROT_WRITE), MAP_SHARED, fd, LW_BRIDGE_BASE);
+        if (LW_virtual == MAP_FAILED) {
+            printf("ERROR: mmap() failed...\n");
+            close(fd);
+            return (-1);
+        }
+
+        pthread_mutex_lock(&mutex); 
+        HEX5_ptr = (int *)(LW_virtual + HEX5_BASE);
+        HEX4_ptr = (int *)(LW_virtual + HEX4_BASE);
+        HEX3_ptr = (int *)(LW_virtual + HEX3_BASE);
+        HEX2_ptr = (int *)(LW_virtual + HEX2_BASE);
+        HEX1_ptr = (int *)(LW_virtual + HEX1_BASE);
+        HEX0_ptr = (int *)(LW_virtual + HEX0_BASE);
+        pthread_mutex_unlock(&mutex); 
+
+
+        //seta os bits nos leds
+        //LED 2
+        *HEX1_ptr = 0b01000000;
+        //LED 3
+        *HEX2_ptr = 0b1111111;
+        //LED 4
+        *HEX3_ptr = 0b1111111;
+        //LED 5
+        *HEX4_ptr = 0b1111111;
+        //LED 6
+        *HEX5_ptr = 0b1111111;
+        //Função para decrementar valores no display conforme colide
+        alterar_display();
+
+        
+
+     // Fechar o mapeamento de endereço virtual previamente aberto
+        if (munmap(LW_virtual, LW_BRIDGE_SPAN) != 0) {
+            printf("ERROR: munmap() failed...\n");
+            return (-1);
+        }
+
+        // Fechar /dev/mem para dar acesso a endereços físicos
+        close(fd); 
+    }
+
+    void alterar_display(){
+        
+        if(diminuir_display == 3){
+            *HEX0_ptr = 0b0110000; 
+        }
+        else if(diminuir_display == 2){
+             
+            *HEX0_ptr = 0b0100100;
+             
+        }
+        else if(diminuir_display == 1){
+            
+            *HEX0_ptr = 0b1111001;
+             
+        }
+        else{
+            
+            *HEX0_ptr = 0b0111111;
+            //reinicia todo o cenario
+            zerar_tudo();
+
+        }
+        
+
+    }
+
+
+    void zerar_tudo(){
+        
+        set_background(fd, &dataA,&dataB, 0, 0, 0);
+
+        
+        //primeiro retangulo do cenario, depois da largada verde
+            for(int i = 5; i<= 14; i++){
+                for(int j = 1; j <= 49; j++){
+                    pthread_mutex_lock(&mutex); 
+                    editar_bloco_background(fd, &dataA,&dataB, i, j, 0,0,0);
+                    pthread_mutex_unlock(&mutex); 
+                }
+            }
+            for(int i = 5; i<= 22; i++){
+                pthread_mutex_lock(&mutex); 
+                editar_bloco_background(fd, &dataA,&dataB, i, 14, 0,0,0);
+                pthread_mutex_unlock(&mutex); 
+            }
+ 
+
+            //parte da entrada
+            for(int j = 1; j <= 13; j++){
+                pthread_mutex_lock(&mutex); 
+                editar_bloco_background(fd, &dataA,&dataB, 14, j, 0,0,0);
+                pthread_mutex_unlock(&mutex); 
+                for(int i = 15; i<= 21; i++){
+                    pthread_mutex_lock(&mutex); 
+                    editar_bloco_background(fd, &dataA,&dataB, i, 1, 0,0,0);
+                    pthread_mutex_unlock(&mutex); 
+                } 
+                for(int i = 15; i<= 21; i++){
+                    pthread_mutex_lock(&mutex); 
+                    editar_bloco_background(fd, &dataA,&dataB, i, j, 0, 0, 0);
+                    pthread_mutex_unlock(&mutex); 
+                }
+                pthread_mutex_lock(&mutex); 
+                editar_bloco_background(fd, &dataA,&dataB, 22, j, 0,0,0);
+                pthread_mutex_unlock(&mutex); 
+            }
+            //parte da saída
+            for(int i = 17; i <= 28; i++){
+                pthread_mutex_lock(&mutex); 
+                editar_bloco_background(fd, &dataA,&dataB, 70, i, 0,0,0);
+                pthread_mutex_unlock(&mutex); 
+                for(int j = 70; j<= 78; j++){
+                    pthread_mutex_lock(&mutex); 
+                    editar_bloco_background(fd, &dataA,&dataB, j, 17, 0,0,0);
+                    pthread_mutex_unlock(&mutex); 
+                }
+                for(int j = 71; j<= 77; j++){
+                    pthread_mutex_lock(&mutex); 
+                    editar_bloco_background(fd, &dataA,&dataB, j, i, 0, 0, 0);
+                    pthread_mutex_unlock(&mutex); 
+                }
+                pthread_mutex_lock(&mutex); 
+                editar_bloco_background(fd, &dataA,&dataB, 78, i, 0,0,0);
+                pthread_mutex_unlock(&mutex); 
+            }
+
+
+            //preenchimento primeiro retangulo do cenario (parte branca)
+            for(int i = 5; i <= 24; i++){
+                for(int j = 29; j <= 50; j++){
+                    pthread_mutex_lock(&mutex); 
+                    editar_bloco_background(fd, &dataA,&dataB, i, j, 0,0,0);
+                    pthread_mutex_unlock(&mutex); 
+                }
+            }
+            for(int i = 60; i <= 78; i++){
+                for(int j = 29; j <= 50; j++){
+                    pthread_mutex_lock(&mutex); 
+                    editar_bloco_background(fd, &dataA,&dataB, i, j, 0,0,0);
+                    pthread_mutex_unlock(&mutex); 
+                }
+            }
+            //retangulo deitado branco
+
+            for(int i = 25; i <= 59; i++){
+                for(int j = 43; j <= 50; j++){
+                    pthread_mutex_lock(&mutex); 
+                    editar_bloco_background(fd, &dataA,&dataB, i, j, 0,0,0);
+                    pthread_mutex_unlock(&mutex); 
+                }
+            } 
+            for(int i = 13; i <= 75; i++){
+                pthread_mutex_lock(&mutex); 
+                editar_bloco_background(fd, &dataA,&dataB, i, 49, 0,0,0);
+                pthread_mutex_unlock(&mutex); 
+            }
+        pthread_mutex_lock(&mutex); 
+        //sprite emoji
+        print_sprite(fd, &dataA, &dataB, 0, 138, 58, 25, 1);
+        pthread_mutex_unlock(&mutex); 
+
+        pthread_mutex_lock(&mutex); 
+        //sprites da primeira thread
+        print_sprite(fd, &dataA, &dataB, 0, 0, 0, 1, 3); 
+        print_sprite(fd, &dataA, &dataB, 0, 0, 0, 1, 5); 
+        print_sprite(fd, &dataA, &dataB, 0, 0, 0, 1, 6);
+        print_sprite(fd, &dataA, &dataB, 0, 0, 0, 1, 7);
+        print_sprite(fd, &dataA, &dataB, 0, 0, 0, 1, 8);
+        pthread_mutex_unlock(&mutex);
+
+        pthread_mutex_lock(&mutex);
+        //sprites da segunda thread
+        print_sprite(fd, &dataA, &dataB, 0, 0, 0, 1, 11); 
+        print_sprite(fd, &dataA, &dataB, 0, 0, 0, 1, 10);
+        print_sprite(fd, &dataA, &dataB, 0, 0, 0, 1, 12);
+        print_sprite(fd, &dataA, &dataB, 0, 0, 0, 1, 13);
+        pthread_mutex_unlock(&mutex);
+
+
+        pthread_cancel(threads[0]);
+        pthread_cancel(threads[2]);
+        pthread_cancel(threads[3]);
+        
+    }
 
 
 
@@ -414,12 +740,15 @@ void *obstaculo_velocidade_diferente(){
         pthread_create(&(threads[1]),NULL,botao,NULL);
         pthread_create(&(threads[2]),NULL,obstaculo,NULL);
         pthread_create(&(threads[3]),NULL,obstaculo_velocidade_diferente,NULL);
+        pthread_create(&(threads[4]),NULL,display,NULL);
+
 
 
         pthread_join(threads[0],NULL);
         pthread_join(threads[1],NULL);
         pthread_join(threads[2],NULL);
         pthread_join(threads[3],NULL);
+        pthread_join(threads[4],NULL);
 
         pthread_mutex_destroy(&mutex);  
         return 0;
@@ -427,7 +756,8 @@ void *obstaculo_velocidade_diferente(){
     }
 
 
-        int main() {
+
+        int jogo(){
             const char *device_path = "/dev/driver_dos_amigos"; 
             fd = open_device(device_path); // Abre o dispositivo
             char informacao[512]; // Buffer para armazenar informações
@@ -435,19 +765,10 @@ void *obstaculo_velocidade_diferente(){
             uint32_t dataB = 0;
 
             
-
-            //print_sprite(fd, &dataA, &dataB, 1, 138, 58, 2, 1);
-
             print_sprite(fd, &dataA, &dataB, 1, 138, 58, 25, 1);
             set_background(fd, &dataA,&dataB, 0, 5, 6);
-            /*
-            
-            for(int i = 0; i < 80; i++){
-                for(int j = 0; j < 60; j++){
-                    editar_bloco_background(fd, &dataA,&dataB, i, j, 6, 7, 7);
-                }
-            } 
-            */
+  
+  
             //primeiro retangulo do cenario, depois da largada verde
             for(int i = 5; i<= 14; i++){
                 for(int j = 1; j <= 49; j++){
@@ -457,19 +778,7 @@ void *obstaculo_velocidade_diferente(){
             for(int i = 5; i<= 22; i++){
                 editar_bloco_background(fd, &dataA,&dataB, i, 14, 7, 7, 7);
             }
-        /*
-            for(int i = 5; i <= 12; i++){
-                editar_bloco_background(fd, &dataA,&dataB, i, 16, 7, 7, 7);
-            }
-
-            for(int i = 16; i <= 49; i++){
-                editar_bloco_background(fd, &dataA,&dataB, 13, i, 7, 7, 7);
-            }
-
-            for(int i = 5; i <= 12; i++){
-                editar_bloco_background(fd, &dataA,&dataB, i, 47, 7, 7, 7);
-            }
-        */
+ 
 
             //parte da entrada
             for(int j = 1; j <= 13; j++){
@@ -629,7 +938,7 @@ void *obstaculo_velocidade_diferente(){
             }
         
  
-        main_mouse();
+            main_mouse();
 
             // Buffer para armazenar a leitura do dispositivo
             char buffer[100];
@@ -641,4 +950,9 @@ void *obstaculo_velocidade_diferente(){
             // Fecha o dispositivo
             close_device(fd); 
             return EXIT_SUCCESS;
+        }
+
+        int main() {
+            jogo();
+            
         }
