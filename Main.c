@@ -1,39 +1,40 @@
-    #include "biblioteca.h" 
-    #include <stdio.h>
-    #include <stdlib.h>
-    #include <fcntl.h>
-    #include <unistd.h>
-    #include <string.h>
-    #include <errno.h>
-    #include <stdint.h>
-    #include <inttypes.h>
-    #include <linux/input.h>
-    #include <pthread.h>
-    #include <semaphore.h>
-    #include <time.h>
-    #include <sys/mman.h>
-    #include "address_map_arm.h"
+#include "biblioteca.h" 
+#include <stdio.h>
+#include <stdlib.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include <string.h>
+#include <errno.h>
+#include <stdint.h>
+#include <inttypes.h>
+#include <linux/input.h>
+#include <pthread.h>
+#include <semaphore.h>
+#include <time.h>
+#include <sys/mman.h>
+#include "address_map_arm.h"
 
 
 
-            
-    pthread_t threads[10];
-    uint32_t dataA = 0;
-    uint32_t dataB = 0;
-    int colidiu = 0;
+        
+pthread_t threads[10];
+uint32_t dataA = 0;
+uint32_t dataB = 0;
+int colidiu = 0;
 
-    int diminuir_display = 3;
+int diminuir_display = 3;
 
-    pthread_mutex_t mutex;
-    int coodx = 136, coody = 58;
+pthread_mutex_t mutex;
+int coodx = 136, coody = 58;
 
+int obj7 = 1;
+int loop1 = 1;
+int dir = 1;
+int dir2 = 1;
 
-    int loop1 = 1;
+#define MOUSE_DEV "/dev/input/event0"
 
-
-    #define MOUSE_DEV "/dev/input/event0"
-
-    #define HEX5_BASE 0x10
+#define HEX5_BASE 0x10
 #define HEX4_BASE 0x20
 #define HEX3_BASE 0x30
 #define HEX2_BASE 0x40
@@ -235,7 +236,6 @@ volatile int *HEX0_ptr;
                 setar();
                 jogo();
                 estado = 1;
-               
             }
 
             if(*KEY_ptr == 13 && estado == 0) {
@@ -280,7 +280,7 @@ void *obstaculo(){
      // Posição inicial do obstáculo
     int obstaculo_x_1 = 40; // Posição inicial do obstáculo
     int obstaculo_y_1 = 140;
-    int obstaculo_x_2 = 40; 
+    int obstaculo_x_2 = 100; 
     int obstaculo_y_2 = 200;
 
 
@@ -289,7 +289,7 @@ void *obstaculo(){
     int obstaculo_y_3 = 343;
 
     int obstaculo_x_4 = 325; 
-    int obstaculo_y_4 = 343;
+    int obstaculo_y_4 = 385;
 
     int obstaculo_x_5 = 435; 
     int obstaculo_y_5 = 343;
@@ -298,11 +298,11 @@ void *obstaculo(){
     while(loop1){
         //sprite 1
         int distancia_sprite_1 = 20;
-        int distancia_y = 20;
+        int distancia_y = 15;
         colidiu = 0;
         for (int i = 0; i < (distancia_sprite_1 * 2); i++){
             
-            pthread_mutex_lock(&mutex); 
+            pthread_mutex_lock(&mutex);
             print_sprite(fd, &dataA, &dataB, 1, obstaculo_x_1, obstaculo_y_1, 1, 3); 
             print_sprite(fd, &dataA, &dataB, 1, obstaculo_x_2, obstaculo_y_2, 1, 5); 
             print_sprite(fd, &dataA, &dataB, 1, obstaculo_x_3, obstaculo_y_3, 1, 6);
@@ -312,35 +312,23 @@ void *obstaculo(){
 
             if (i < distancia_sprite_1){
                 obstaculo_x_1 += 3;
-                obstaculo_x_2 += 3;
+                obstaculo_x_2 -= 3;
             }
             else{
                 obstaculo_x_1 -= 3;
-                obstaculo_x_2 -= 3;
+                obstaculo_x_2 += 3;
  
             }
-            if(obstaculo_x_1 == 40){
-                while(obstaculo_y_1 < 160){
-                    obstaculo_y_1 += 1;
-                    obstaculo_y_2 += 1;
-                }
-            }
-            else if(obstaculo_x_2 == 100){
-                while(obstaculo_y_1 > 140){
-                    obstaculo_y_1 -= 1;
-                    obstaculo_y_2 -= 1;
-                }
-            }
 
-            if(i < distancia_y && i < 40){
-                obstaculo_y_3 +=2; 
-                obstaculo_y_4 +=2;
-                obstaculo_y_5 +=2; 
+            if(i < distancia_y && i < 30){
+                obstaculo_y_3 +=3; 
+                obstaculo_y_4 -=3;
+                obstaculo_y_5 +=3; 
             }
-            else if(i < 40){
-                obstaculo_y_3 -=2;
-                obstaculo_y_4 -=2;
-                obstaculo_y_5 -=2;
+            else if(i < 30){
+                obstaculo_y_3 -=3;
+                obstaculo_y_4 +=3;
+                obstaculo_y_5 -=3;
             }
 
             //COLISAO sprite 1 do retangulo vertical
@@ -421,30 +409,30 @@ void *obstaculo(){
 void *obstaculo_velocidade_diferente(){
   
     struct timespec interval = {0, 2000000};
- 
+
     //retandulo pequeno vertical
     int obstaculo_x_7 = 40; // Posição inicial do obstáculo
-    int obstaculo_y_7 = 260; // Posição inicial do obstáculo
+    int obstaculo_y_7 = 240; // Posição inicial do obstáculo
     
-    int obstaculo_x_8 = 40; 
-    int obstaculo_y_8 = 320;
+    int obstaculo_x_8 = 140; 
+    int obstaculo_y_8 = 354;
 
 
 
-    int obstaculo_x_9 = 478; // Posição inicial do obstáculo
-    int obstaculo_y_9 = 260; // Posição inicial do obstáculo
+    int obstaculo_x_9 = 477; // Posição inicial do obstáculo
+    int obstaculo_y_9 = 240; // Posição inicial do obstáculo
     
-    int obstaculo_x_10 = 478; 
-    int obstaculo_y_10 = 320;
+    int obstaculo_x_10 = 585; 
+    int obstaculo_y_10 = 354;
 
 
 
     while(1){
+        int po;
         //sprite 1
-        int distancia_sprite_1 = 140;
-
+        int distancia_sprite_1 = 44;
+ 
         for (int i = 0; i < (distancia_sprite_1 * 2); i++){
-            
             pthread_mutex_lock(&mutex); 
             print_sprite(fd, &dataA, &dataB, 1, obstaculo_x_7, obstaculo_y_7, 1, 11); //colocar para printar sprite aq
             print_sprite(fd, &dataA, &dataB, 1, obstaculo_x_8, obstaculo_y_8, 1, 10);
@@ -452,24 +440,87 @@ void *obstaculo_velocidade_diferente(){
             print_sprite(fd, &dataA, &dataB, 1, obstaculo_x_10, obstaculo_y_10, 1, 13);
             pthread_mutex_unlock(&mutex);
 
-
-
-            if (i < distancia_sprite_1){
-                obstaculo_x_7 += 1;
-                obstaculo_x_8 += 1;
-                obstaculo_x_9 += 1;
-                obstaculo_x_10 += 1;
-                
-        
+            if(dir == 1) {
+                obstaculo_x_7 += 3;
+                obstaculo_x_9 += 3;
             }
+            if(obstaculo_x_7 > 172) dir = 2;
+            if(dir == 2){
+                obstaculo_y_7 += 3;
+                obstaculo_y_9 += 3;
+            }
+            if(obstaculo_y_7 > 380) dir = 3;
+            if(dir == 3){
+                obstaculo_x_7 -= 3;
+                obstaculo_x_9 -= 3;
+            }
+            if(obstaculo_x_7 < 45) dir = 4;
+            if(dir == 4){ 
+                obstaculo_y_7 -= 3;
+                obstaculo_y_9 -= 3;
+            }
+            if(obstaculo_y_7 < 240) dir = 1;
+            
 
+            if(dir2 == 1) {
+                obstaculo_x_8 -= 3;
+                obstaculo_x_10 -= 3;
+            }
+            if(obstaculo_x_8 < 65) dir2 = 2;
+            if(dir2 == 2){
+                obstaculo_y_8 -= 3;
+                obstaculo_y_10 -= 3;
+            }
+            if(obstaculo_y_8 < 340) dir2 = 3;
+
+            if(dir2 == 3){ 
+                obstaculo_x_8 += 3;
+                obstaculo_x_10 += 3;
+            }
+            if(obstaculo_x_8 > 142) dir2 = 4;
+
+            if(dir2 == 4){
+                 obstaculo_y_8 += 3;
+                 obstaculo_y_10 += 3;
+            }
+            if(obstaculo_y_8 > 280) dir2 = 1;
+
+            /*
+            if(obstaculo_x_7 == 172 && obj7 == 1){
+                if(obstaculo_y_7 < 385){
+                    obstaculo_y_7 += 3;
+                    printf("desceu\n");
+                }
+                else{
+                    obj7 = 2;
+                }
+            }
+            if (i < distancia_sprite_1 && obj7 == 1){
+                if(obj7 == 1) obstaculo_x_7 += 3;
+                obstaculo_x_8 += 3;
+                obstaculo_x_9 += 3;
+                obstaculo_x_10 += 3;
+            }
             else{
-                obstaculo_x_7 -= 1;
-                obstaculo_x_8 -= 1; 
-                obstaculo_x_9 -= 1;
-                obstaculo_x_10 -= 1;
+                if(obj7 == 2) obstaculo_x_7 -= 3;
+                obstaculo_x_8 -= 3; 
+                obstaculo_x_9 -= 3;
+                obstaculo_x_10 -= 3;
+                if(obstaculo_x_7 == 40) obj7 = 1;
             }
-       
+            if(obj7 == 2){
+                if(obstaculo_y_7 > 240){
+                    obstaculo_y_7 -= 1;
+                }
+                else{
+                    obj7 = 1;
+                }
+            }
+            */
+            //printf("%d\n", obstaculo_x_7);
+        
+
+            //printf("obj: %d\n", obj7);
             //COLISAO 1 SPRITE DO QUADRADO DA ESQUERDA
             if(obstaculo_x_7 <= coodx+20 && obstaculo_x_7 + 20 > coodx && obstaculo_y_7 < coody+20 && obstaculo_y_7+20> coody){
                 
