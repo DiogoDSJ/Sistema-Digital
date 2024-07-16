@@ -231,8 +231,6 @@ volatile int *HEX0_ptr;
                 pthread_cancel(threads[0]);
                 pthread_cancel(threads[2]);
                 pthread_cancel(threads[3]);
-                //pthread_cancel(threads[1]);
-                pthread_cancel(threads[4]);
                 setar();
                 jogo();
                 estado = 1;
@@ -245,11 +243,6 @@ volatile int *HEX0_ptr;
 
             }
 
-            if(*KEY_ptr == 11 && estado == 0){
-                printf("Botao KEY 0 foi clicado para setar \n");
-                setar();   
-                estado = 1;
-            }
             if (estado == 1 && *KEY_ptr != 14){
                 estado = 0;
             }
@@ -579,61 +572,7 @@ void *obstaculo_velocidade_diferente(){
 
 
 
-    void *display(void *arg){
-        //Usado para abrir /dev/mem
-    int fd = -1;
-
-    //Endereços físicos para a ponte (light-weight bridge)
-    void *LW_virtual;
-        // Abrir /dev/mem para dar acesso a endereços físicos
-        if ((fd = open("/dev/mem", (O_RDWR | O_SYNC))) == -1) {
-            printf("ERROR: could not open \"/dev/mem\"...\n");
-            return (-1);
-        }
-
-        // Obter um mapeamento de endereços físicos para endereços virtuais
-        LW_virtual = mmap(NULL, LW_BRIDGE_SPAN, (PROT_READ | PROT_WRITE), MAP_SHARED, fd, LW_BRIDGE_BASE);
-        if (LW_virtual == MAP_FAILED) {
-            printf("ERROR: mmap() failed...\n");
-            close(fd);
-            return (-1);
-        }
-
-        pthread_mutex_lock(&mutex); 
-        HEX5_ptr = (int *)(LW_virtual + HEX5_BASE);
-        HEX4_ptr = (int *)(LW_virtual + HEX4_BASE);
-        HEX3_ptr = (int *)(LW_virtual + HEX3_BASE);
-        HEX2_ptr = (int *)(LW_virtual + HEX2_BASE);
-        HEX1_ptr = (int *)(LW_virtual + HEX1_BASE);
-        HEX0_ptr = (int *)(LW_virtual + HEX0_BASE);
-        pthread_mutex_unlock(&mutex); 
-
-
-        //seta os bits nos leds
-        //LED 2
-        *HEX1_ptr = 0b01000000;
-        //LED 3
-        *HEX2_ptr = 0b1111111;
-        //LED 4
-        *HEX3_ptr = 0b1111111;
-        //LED 5
-        *HEX4_ptr = 0b1111111;
-        //LED 6
-        *HEX5_ptr = 0b1111111;
-        //Função para decrementar valores no display conforme colide
-        alterar_display();
-
-        
-
-     // Fechar o mapeamento de endereço virtual previamente aberto
-        if (munmap(LW_virtual, LW_BRIDGE_SPAN) != 0) {
-            printf("ERROR: munmap() failed...\n");
-            return (-1);
-        }
-
-        // Fechar /dev/mem para dar acesso a endereços físicos
-        close(fd); 
-    }
+    
 
     void alterar_display(){
         
@@ -791,15 +730,13 @@ void *obstaculo_velocidade_diferente(){
         pthread_create(&(threads[1]),NULL,botao,NULL);
         pthread_create(&(threads[2]),NULL,obstaculo,NULL);
         pthread_create(&(threads[3]),NULL,obstaculo_velocidade_diferente,NULL);
-        pthread_create(&(threads[4]),NULL,display,NULL);
-
+    
 
 
         pthread_join(threads[0],NULL);
         pthread_join(threads[1],NULL);
         pthread_join(threads[2],NULL);
         pthread_join(threads[3],NULL);
-        pthread_join(threads[4],NULL);
 
         pthread_mutex_destroy(&mutex);  
         return 0;
@@ -1003,7 +940,139 @@ void *obstaculo_velocidade_diferente(){
             return EXIT_SUCCESS;
         }
 
+
+           void display(){
+                //Usado para abrir /dev/mem
+            int fd = -1;
+
+            //Endereços físicos para a ponte (light-weight bridge)
+            void *LW_virtual;
+            // Abrir /dev/mem para dar acesso a endereços físicos
+            if ((fd = open("/dev/mem", (O_RDWR | O_SYNC))) == -1) {
+                printf("ERROR: could not open \"/dev/mem\"...\n");
+                return (-1);
+            }
+
+            // Obter um mapeamento de endereços físicos para endereços virtuais
+            LW_virtual = mmap(NULL, LW_BRIDGE_SPAN, (PROT_READ | PROT_WRITE), MAP_SHARED, fd, LW_BRIDGE_BASE);
+            if (LW_virtual == MAP_FAILED) {
+                printf("ERROR: mmap() failed...\n");
+                close(fd);
+                return (-1);
+            }
+
+            pthread_mutex_lock(&mutex); 
+            HEX5_ptr = (int *)(LW_virtual + HEX5_BASE);
+            HEX4_ptr = (int *)(LW_virtual + HEX4_BASE);
+            HEX3_ptr = (int *)(LW_virtual + HEX3_BASE);
+            HEX2_ptr = (int *)(LW_virtual + HEX2_BASE);
+            HEX1_ptr = (int *)(LW_virtual + HEX1_BASE);
+            HEX0_ptr = (int *)(LW_virtual + HEX0_BASE);
+            pthread_mutex_unlock(&mutex); 
+
+
+            //seta os bits nos leds
+            //LED 2
+            *HEX1_ptr = 0b01000000;
+            //LED 3
+            *HEX2_ptr = 0b1111111;
+            //LED 4
+            *HEX3_ptr = 0b1111111;
+            //LED 5
+            *HEX4_ptr = 0b1111111;
+            //LED 6
+            *HEX5_ptr = 0b1111111;
+            //Função para decrementar valores no display conforme colide
+            alterar_display();
+
+            
+
+        // Fechar o mapeamento de endereço virtual previamente aberto
+            if (munmap(LW_virtual, LW_BRIDGE_SPAN) != 0) {
+                printf("ERROR: munmap() failed...\n");
+                return (-1);
+            }
+
+            // Fechar /dev/mem para dar acesso a endereços físicos
+            close(fd); 
+    }
+
+
+     void inicio(){
+        const char *device_path = "/dev/driver_dos_amigos"; 
+        fd = open_device(device_path); // Abre o dispositivo
+        char informacao[512]; // Buffer para armazenar informações
+        uint32_t dataA = 0;
+        uint32_t dataB = 0;
+        pthread_mutex_lock(&mutex); 
+        set_background(fd, &dataA,&dataB, 0, 5, 6);
+        pthread_mutex_unlock(&mutex); 
+
+
+
+
+
+
+
+
+        //primeiro retangulo do cenario, depois da largada verde
+        for(int i = 5; i<= 14; i++){
+           editar_bloco_background(fd, &dataA,&dataB, 20, i, 7, 7, 7);
+        }
+
+        for(int i = 20; i<= 25; i++){
+            editar_bloco_background(fd, &dataA,&dataB, i, 5, 7, 7, 7);
+        }
+        
+        for(int i = 20; i<= 25; i++){
+            editar_bloco_background(fd, &dataA,&dataB, i, 5, 7, 7, 7);
+        }
+
+
+
+
+
+
+        volatile int *KEY_ptr; // virtual address pointer to red LEDs
+        int fd = -1; // used to open /dev/mem
+        void *LW_virtual; // physical addresses for light-weight bridge
+
+        // Open /dev/mem to give access to physical addresses
+        if ((fd = open("/dev/mem", (O_RDWR | O_SYNC))) == -1) {
+            printf("ERROR: could not open \"/dev/mem\"...\n");
+            return (-1);
+        }
+
+        // Get a mapping from physical addresses to virtual addresses
+        LW_virtual = mmap(NULL, LW_BRIDGE_SPAN, (PROT_READ | PROT_WRITE), MAP_SHARED, fd, LW_BRIDGE_BASE);
+        if (LW_virtual == MAP_FAILED) {
+            printf("ERROR: mmap() failed...\n");
+            close(fd);
+            return (-1);
+        }
+
+        // Set virtual address pointer to I/O port
+        KEY_ptr = (int *)(LW_virtual + 0x0);
+
+        int estado = 0;
+
+        while (1)
+        {
+            if(*KEY_ptr == 14 && estado == 0){
+                printf("Botao KEY 0 foi clicado para setar \n");
+                setar();
+                jogo();   
+                estado = 1;
+
+            }
+            if (estado == 1 && *KEY_ptr != 14){
+                estado = 0;
+            }
+        }
+     }
+
         int main() {
-            jogo();
+            display();
+            inicio();
             
         }
