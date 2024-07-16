@@ -1076,3 +1076,4 @@ void *obstaculo_velocidade_diferente(){
             inicio();
             
         }
+
