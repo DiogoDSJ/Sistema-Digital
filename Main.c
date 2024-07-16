@@ -23,6 +23,7 @@ uint32_t dataB = 0;
 int colidiu = 0;
 
 int diminuir_display = 3;
+int ativar_sprite = 1;
 
 pthread_mutex_t mutex;
 int coodx = 136, coody = 58;
@@ -157,7 +158,7 @@ volatile int *HEX0_ptr;
 
             printf("x: %d, y: %d\n", coodx, coody);
             pthread_mutex_lock(&mutex); 
-            print_sprite(fd, &dataA, &dataB, 1, coodx, coody, 25, 1);
+            print_sprite(fd, &dataA, &dataB, ativar_sprite, coodx, coody, 25, 1);
             pthread_mutex_unlock(&mutex); 
             
             // Processa o evento recebido
@@ -186,11 +187,13 @@ volatile int *HEX0_ptr;
 
     void setar(void){
         coodx = 139;coody = 54;
-        pthread_mutex_unlock(&mutex); 
-        print_sprite(fd, &dataA, &dataB, 1, coodx, coody, 25, 1); 
+        ativar_sprite = 1;
+        pthread_mutex_unlock(&mutex);     
+        print_sprite(fd, &dataA, &dataB, ativar_sprite, coodx, coody, 25, 1);
         *HEX0_ptr = 0b0110000;
         pthread_mutex_unlock(&mutex); 
         diminuir_display = 3;
+        
 
     }
 
@@ -296,11 +299,11 @@ void *obstaculo(){
         for (int i = 0; i < (distancia_sprite_1 * 2); i++){
             
             pthread_mutex_lock(&mutex);
-            print_sprite(fd, &dataA, &dataB, 1, obstaculo_x_1, obstaculo_y_1, 1, 3); 
-            print_sprite(fd, &dataA, &dataB, 1, obstaculo_x_2, obstaculo_y_2, 1, 5); 
-            print_sprite(fd, &dataA, &dataB, 1, obstaculo_x_3, obstaculo_y_3, 1, 6);
-            print_sprite(fd, &dataA, &dataB, 1, obstaculo_x_4, obstaculo_y_4, 1, 7);
-            print_sprite(fd, &dataA, &dataB, 1, obstaculo_x_5, obstaculo_y_5, 1, 8);
+            print_sprite(fd, &dataA, &dataB, ativar_sprite, obstaculo_x_1, obstaculo_y_1, 1, 3); 
+            print_sprite(fd, &dataA, &dataB, ativar_sprite, obstaculo_x_2, obstaculo_y_2, 1, 5); 
+            print_sprite(fd, &dataA, &dataB, ativar_sprite, obstaculo_x_3, obstaculo_y_3, 1, 6);
+            print_sprite(fd, &dataA, &dataB, ativar_sprite, obstaculo_x_4, obstaculo_y_4, 1, 7);
+            print_sprite(fd, &dataA, &dataB, ativar_sprite, obstaculo_x_5, obstaculo_y_5, 1, 8);
             pthread_mutex_unlock(&mutex); 
 
             if (i < distancia_sprite_1){
@@ -327,7 +330,7 @@ void *obstaculo(){
             //COLISAO sprite 1 do retangulo vertical
             if(obstaculo_x_1 <= coodx+20 && obstaculo_x_1 + 20 > coodx && obstaculo_y_1 < coody+20 && obstaculo_y_1+20> coody){
                 coodx = 139;coody = 54;
-                print_sprite(fd, &dataA, &dataB, 1, coodx, coody, 25, 1);
+                print_sprite(fd, &dataA, &dataB, ativar_sprite, coodx, coody, 25, 1);
                 colidiu = 1;
 
                 printf("TEVE COLISAO\n");
@@ -341,7 +344,7 @@ void *obstaculo(){
             if(obstaculo_x_2 <= coodx+20 && obstaculo_x_2 + 20 > coodx && obstaculo_y_2 < coody+20 && obstaculo_y_2+20> coody){
                 printf("TEVE COLISAO\n");
                 coodx = 139;coody = 54;
-                print_sprite(fd, &dataA, &dataB, 1, coodx, coody, 25, 1);
+                print_sprite(fd, &dataA, &dataB, ativar_sprite, coodx, coody, 25, 1);
                 colidiu = 1;
 
                 diminuir_display-=1;
@@ -353,7 +356,7 @@ void *obstaculo(){
             if(obstaculo_x_3 <= coodx+20 && obstaculo_x_3 + 20 > coodx && obstaculo_y_3 < coody+20 && obstaculo_y_3+20> coody){
                 printf("TEVE COLISAO\n");
                 coodx = 139;coody = 54;
-                print_sprite(fd, &dataA, &dataB, 1, coodx, coody, 25, 1);
+                print_sprite(fd, &dataA, &dataB, ativar_sprite, coodx, coody, 25, 1);
                 colidiu = 1;
 
                 diminuir_display-=1;
@@ -365,7 +368,7 @@ void *obstaculo(){
             if(obstaculo_x_4 <= coodx+20 && obstaculo_x_4 + 20 > coodx && obstaculo_y_4 < coody+20 && obstaculo_y_4+20> coody){
                 printf("TEVE COLISAO\n");
                 coodx = 139;coody = 54;
-                print_sprite(fd, &dataA, &dataB, 1, coodx, coody, 25, 1);
+                print_sprite(fd, &dataA, &dataB, ativar_sprite, coodx, coody, 25, 1);
                 colidiu = 1;
 
                 diminuir_display-=1;
@@ -377,7 +380,7 @@ void *obstaculo(){
             if(obstaculo_x_5 <= coodx+20 && obstaculo_x_5 + 20 > coodx && obstaculo_y_5 < coody+20 && obstaculo_y_5+20> coody){
                 printf("TEVE COLISAO\n");
                 coodx = 139;coody = 54;
-                print_sprite(fd, &dataA, &dataB, 1, coodx, coody, 25, 1);
+                print_sprite(fd, &dataA, &dataB, ativar_sprite, coodx, coody, 25, 1);
                 colidiu = 1;
 
                 diminuir_display-=1;
@@ -427,10 +430,10 @@ void *obstaculo_velocidade_diferente(){
  
         for (int i = 0; i < (distancia_sprite_1 * 2); i++){
             pthread_mutex_lock(&mutex); 
-            print_sprite(fd, &dataA, &dataB, 1, obstaculo_x_7, obstaculo_y_7, 1, 11); //colocar para printar sprite aq
-            print_sprite(fd, &dataA, &dataB, 1, obstaculo_x_8, obstaculo_y_8, 1, 10);
-            print_sprite(fd, &dataA, &dataB, 1, obstaculo_x_9, obstaculo_y_9, 1, 12);
-            print_sprite(fd, &dataA, &dataB, 1, obstaculo_x_10, obstaculo_y_10, 1, 13);
+            print_sprite(fd, &dataA, &dataB, ativar_sprite, obstaculo_x_7, obstaculo_y_7, 1, 11); //colocar para printar sprite aq
+            print_sprite(fd, &dataA, &dataB, ativar_sprite, obstaculo_x_8, obstaculo_y_8, 1, 10);
+            print_sprite(fd, &dataA, &dataB, ativar_sprite, obstaculo_x_9, obstaculo_y_9, 1, 12);
+            print_sprite(fd, &dataA, &dataB, ativar_sprite, obstaculo_x_10, obstaculo_y_10, 1, 13);
             pthread_mutex_unlock(&mutex);
 
             if(dir == 1) {
@@ -518,7 +521,7 @@ void *obstaculo_velocidade_diferente(){
             if(obstaculo_x_7 <= coodx+20 && obstaculo_x_7 + 20 > coodx && obstaculo_y_7 < coody+20 && obstaculo_y_7+20> coody){
                 
                 coodx = 139;coody = 54;
-                print_sprite(fd, &dataA, &dataB, 1, coodx, coody, 25, 1);
+                print_sprite(fd, &dataA, &dataB, ativar_sprite, coodx, coody, 25, 1);
 
                 printf("TEVE COLISAO\n");
                 diminuir_display-=1;
@@ -531,7 +534,7 @@ void *obstaculo_velocidade_diferente(){
             if(obstaculo_x_8 <= coodx+20 && obstaculo_x_8 + 20 > coodx && obstaculo_y_8 < coody+20 && obstaculo_y_8+20> coody){
                 printf("TEVE COLISAO\n");
                 coodx = 139;coody = 54;
-                print_sprite(fd, &dataA, &dataB, 1, coodx, coody, 25, 1);
+                print_sprite(fd, &dataA, &dataB, ativar_sprite, coodx, coody, 25, 1);
 
                 diminuir_display-=1;
                 alterar_display();
@@ -542,7 +545,7 @@ void *obstaculo_velocidade_diferente(){
             if(obstaculo_x_9 <= coodx+20 && obstaculo_x_9 + 20 > coodx && obstaculo_y_9 < coody+20 && obstaculo_y_9+20> coody){
                 printf("TEVE COLISAO\n");
                 coodx = 139;coody = 54;
-                print_sprite(fd, &dataA, &dataB, 1, coodx, coody, 25, 1);
+                print_sprite(fd, &dataA, &dataB, ativar_sprite, coodx, coody, 25, 1);
 
                 diminuir_display-=1;
                 alterar_display();
@@ -553,7 +556,7 @@ void *obstaculo_velocidade_diferente(){
             if(obstaculo_x_10 <= coodx+20 && obstaculo_x_10 + 20 > coodx && obstaculo_y_10 < coody+20 && obstaculo_y_10+20> coody){
                 printf("TEVE COLISAO\n");
                 coodx = 139;coody = 54;
-                print_sprite(fd, &dataA, &dataB, 1, coodx, coody, 25, 1);
+                print_sprite(fd, &dataA, &dataB, ativar_sprite, coodx, coody, 25, 1);
 
                 diminuir_display-=1;
                 alterar_display();
@@ -692,26 +695,17 @@ void *obstaculo_velocidade_diferente(){
             }
         pthread_mutex_lock(&mutex); 
         //sprite emoji
-        print_sprite(fd, &dataA, &dataB, 0, 138, 58, 25, 1);
+        print_sprite(fd, &dataA, &dataB, ativar_sprite, 138, 58, 25, 1);
         pthread_mutex_unlock(&mutex); 
 
         pthread_mutex_lock(&mutex); 
         //sprites da primeira thread
-        print_sprite(fd, &dataA, &dataB, 0, 0, 0, 1, 3); 
-        print_sprite(fd, &dataA, &dataB, 0, 0, 0, 1, 5); 
-        print_sprite(fd, &dataA, &dataB, 0, 0, 0, 1, 6);
-        print_sprite(fd, &dataA, &dataB, 0, 0, 0, 1, 7);
-        print_sprite(fd, &dataA, &dataB, 0, 0, 0, 1, 8);
+        ativar_sprite = 0;
         pthread_mutex_unlock(&mutex);
 
-        pthread_mutex_lock(&mutex);
-        //sprites da segunda thread
-        print_sprite(fd, &dataA, &dataB, 0, 0, 0, 1, 11); 
-        print_sprite(fd, &dataA, &dataB, 0, 0, 0, 1, 10);
-        print_sprite(fd, &dataA, &dataB, 0, 0, 0, 1, 12);
-        print_sprite(fd, &dataA, &dataB, 0, 0, 0, 1, 13);
-        pthread_mutex_unlock(&mutex);
-
+        for(int i = 0; i < 31; i++){
+            print_sprite(fd, &dataA, &dataB, ativar_sprite, 138, 58, 25, i);
+        }
 
         pthread_cancel(threads[0]);
         pthread_cancel(threads[2]);
@@ -753,7 +747,7 @@ void *obstaculo_velocidade_diferente(){
             uint32_t dataB = 0;
 
             
-            print_sprite(fd, &dataA, &dataB, 1, 138, 58, 25, 1);
+            print_sprite(fd, &dataA, &dataB, ativar_sprite, 138, 58, 25, 1);
             set_background(fd, &dataA,&dataB, 0, 5, 6);
   
   
@@ -998,6 +992,8 @@ void *obstaculo_velocidade_diferente(){
     }
 
 
+
+
      void inicio(){
         const char *device_path = "/dev/driver_dos_amigos"; 
         fd = open_device(device_path); // Abre o dispositivo
@@ -1007,8 +1003,6 @@ void *obstaculo_velocidade_diferente(){
         pthread_mutex_lock(&mutex); 
         set_background(fd, &dataA,&dataB, 0, 5, 6);
         pthread_mutex_unlock(&mutex); 
-
-
 
 
 
@@ -1027,7 +1021,6 @@ void *obstaculo_velocidade_diferente(){
         for(int i = 20; i<= 25; i++){
             editar_bloco_background(fd, &dataA,&dataB, i, 5, 7, 7, 7);
         }
-
 
 
 
@@ -1076,4 +1069,3 @@ void *obstaculo_velocidade_diferente(){
             inicio();
             
         }
-
