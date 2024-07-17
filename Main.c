@@ -684,6 +684,7 @@ void *obstaculo_velocidade_diferente(){
             //reinicia todo o cenario
             zerar_tudo();
             sleep(1);
+            voce_perdeu();
             exit(0);
             
 
@@ -1099,7 +1100,8 @@ void *obstaculo_velocidade_diferente(){
             close(fd); 
     }
 
-   void palavra_you(int r, int g, int b){
+   
+    void palavra_you(int r, int g, int b){
 
 
     
@@ -1328,6 +1330,335 @@ void palavra_won(int r, int g, int b){
         }
        
     }
+
+}
+/*******************************************************************************************************************************************************************************/
+void palavra_game(int r, int g, int b){
+
+
+    //letra g
+
+    for (int i = 8; i <= 15; i++){
+
+        for(int j = 18; j <= 19; j++){
+            editar_bloco_background(fd, &dataA, &dataB, i, j, r, g, b);
+        }
+       
+    }
+
+    for (int i = 8; i <= 9; i++){
+
+        for(int j = 20; j <= 27; j++){
+            editar_bloco_background(fd, &dataA, &dataB, i, j, r, g, b);
+        }
+       
+    }
+
+    for (int i = 10; i <= 15; i++){
+
+        for(int j = 26; j <= 27; j++){
+            editar_bloco_background(fd, &dataA, &dataB, i, j, r, g, b);
+        }
+       
+    }
+
+    for (int i = 14; i <= 15; i++){
+
+        for(int j = 22; j <= 25; j++){
+            editar_bloco_background(fd, &dataA, &dataB, i, j, r, g, b);
+        }
+       
+    }
+
+    for (int i = 12; i <= 13; i++){
+
+        for(int j = 22; j <= 23; j++){
+            editar_bloco_background(fd, &dataA, &dataB, i, j, r, g, b);
+        }
+       
+    }
+
+    //letra a
+
+
+    for (int i = 19; i <= 20; i++){
+
+        for(int j = 18; j <= 27; j++){
+            editar_bloco_background(fd, &dataA, &dataB, i, j, r, g, b);
+        }
+       
+    }
+
+    for (int i = 20; i <= 25; i++){
+
+        for(int j = 18; j <= 19; j++){
+            editar_bloco_background(fd, &dataA, &dataB, i, j, r, g, b);
+        }
+       
+    }
+    
+    for (int i = 24; i <= 25; i++){
+
+        for(int j = 20; j <= 27; j++){
+            editar_bloco_background(fd, &dataA, &dataB, i, j, r, g, b);
+        }
+       
+    }
+
+    for (int i = 20; i <= 23; i++){
+
+        for(int j = 22; j <= 23; j++){
+            editar_bloco_background(fd, &dataA, &dataB, i, j, r, g, b);
+        }
+       
+    }
+
+    //letra m 
+
+    for (int i = 28; i <= 29; i++){
+
+        for(int j = 18; j <= 27; j++){
+            editar_bloco_background(fd, &dataA, &dataB, i, j, r, g, b);
+        }
+       
+    }
+
+    
+    for (int i = 30; i <= 31; i++){
+
+        for(int j = 20; j <= 21; j++){
+            editar_bloco_background(fd, &dataA, &dataB, i, j, r, g, b);
+        }
+       
+    }
+    
+    for (int i = 32; i <= 33; i++){
+
+        for(int j = 22; j <= 23; j++){
+            editar_bloco_background(fd, &dataA, &dataB, i, j, r, g, b);
+        }
+       
+    }
+
+    for (int i = 34; i <= 35; i++){
+
+        for(int j = 20; j <= 21; j++){
+            editar_bloco_background(fd, &dataA, &dataB, i, j, r, g, b);
+        }
+       
+    }
+
+    for (int i = 36; i <= 37; i++){
+
+        for(int j = 18; j <= 27; j++){
+            editar_bloco_background(fd, &dataA, &dataB, i, j, r, g, b);
+        }
+       
+    }
+
+    // letra E
+
+    for (int i = 40; i <= 47; i++){
+
+        for(int j = 18; j <= 19; j++){
+            editar_bloco_background(fd, &dataA, &dataB, i, j, r, g, b);
+        }
+       
+    }
+
+    for (int i = 40; i <= 41; i++){
+
+        for(int j = 20; j <= 28; j++){
+            editar_bloco_background(fd, &dataA, &dataB, i, j, r, g, b);
+        }
+       
+    }
+
+    for (int i = 42; i <= 45; i++){
+
+        for(int j = 22; j <= 23; j++){
+            editar_bloco_background(fd, &dataA, &dataB, i, j, r, g, b);
+        }
+       
+    }
+
+    for (int i = 42; i <= 47; i++){
+
+        for(int j = 26; j <= 27; j++){
+            editar_bloco_background(fd, &dataA, &dataB, i, j, r, g, b);
+        }
+       
+    }
+
+
+
+
+}
+
+void palavra_over(int r, int g, int b){
+
+    
+    //letra O
+
+    for (int i = 31; i <= 38; i++){
+
+        for(int j = 32; j <= 33; j++){
+            editar_bloco_background(fd, &dataA, &dataB, i, j, r, g, b);
+        }
+       
+    }
+
+
+    for (int i = 31; i <= 32; i++){
+
+        for(int j = 34; j <= 41; j++){
+            editar_bloco_background(fd, &dataA, &dataB, i, j, r, g, b);
+        }
+       
+    }
+
+    for (int i = 37; i <= 38; i++){
+
+        for(int j = 34; j <= 41; j++){
+            editar_bloco_background(fd, &dataA, &dataB, i, j, r, g, b);
+        }
+       
+    }
+
+    for (int i = 33; i <= 36; i++){
+
+        for(int j = 40; j <= 41; j++){
+            editar_bloco_background(fd, &dataA, &dataB, i, j, r, g, b);
+        }
+       
+    }
+
+    // letra v
+
+    for (int i = 41; i <= 42; i++){
+
+        for(int j = 32; j <= 35; j++){
+            editar_bloco_background(fd, &dataA, &dataB, i, j, r, g, b);
+        }
+       
+    }
+
+    for (int i = 43; i <= 44; i++){
+
+        for(int j = 36; j <= 39; j++){
+            editar_bloco_background(fd, &dataA, &dataB, i, j, r, g, b);
+        }
+       
+    }
+
+    for (int i = 45; i <= 46; i++){
+
+        for(int j = 40; j <= 41; j++){
+            editar_bloco_background(fd, &dataA, &dataB, i, j, r, g, b);
+        }
+       
+    }
+
+    for (int i = 47; i <= 48; i++){
+
+        for(int j = 36; j <= 39; j++){
+            editar_bloco_background(fd, &dataA, &dataB, i, j, r, g, b);
+        }
+       
+    }
+
+    for (int i = 49; i <= 50; i++){
+
+        for(int j = 32; j <= 35; j++){
+            editar_bloco_background(fd, &dataA, &dataB, i, j, r, g, b);
+        }
+       
+    }
+
+    //letra e 
+
+    for (int i = 53; i <= 60; i++){
+
+        for(int j = 32; j <= 33; j++){
+            editar_bloco_background(fd, &dataA, &dataB, i, j, r, g, b);
+        }
+       
+    }
+
+    for (int i = 53; i <= 54; i++){
+
+        for(int j = 34; j <= 41; j++){
+            editar_bloco_background(fd, &dataA, &dataB, i, j, r, g, b);
+        }
+       
+    }
+
+    for (int i = 55; i <= 58; i++){
+
+        for(int j = 36; j <= 37; j++){
+            editar_bloco_background(fd, &dataA, &dataB, i, j, r, g, b);
+        }
+       
+    }
+
+    for (int i = 55; i <= 60; i++){
+
+        for(int j = 40; j <= 41; j++){
+            editar_bloco_background(fd, &dataA, &dataB, i, j, r, g, b);
+        }
+       
+    }
+
+    //letra R
+
+    for (int i = 63; i <= 70; i++){
+
+        for(int j = 32; j <= 33; j++){
+            editar_bloco_background(fd, &dataA, &dataB, i, j, r, g, b);
+        }
+       
+    }
+
+    for (int i = 63; i <= 64; i++){
+
+        for(int j = 34; j <= 41; j++){
+            editar_bloco_background(fd, &dataA, &dataB, i, j, r, g, b);
+        }
+       
+    }
+
+    for (int i = 65; i <= 68; i++){
+
+        for(int j = 36; j <= 37; j++){
+            editar_bloco_background(fd, &dataA, &dataB, i, j, r, g, b);
+        }
+       
+    }
+
+    for (int i = 67; i <= 68; i++){
+
+        for(int j = 38; j <= 39; j++){
+            editar_bloco_background(fd, &dataA, &dataB, i, j, r, g, b);
+        }
+       
+    }
+
+    for (int i = 69; i <= 70; i++){
+
+        for(int j = 34; j <= 35; j++){
+            editar_bloco_background(fd, &dataA, &dataB, i, j, r, g, b);
+        }
+       
+    }
+
+    for (int i = 69; i <= 70; i++){
+
+        for(int j = 39; j <= 41; j++){
+            editar_bloco_background(fd, &dataA, &dataB, i, j, r, g, b);
+        }
+       
+    }
+
 
 }
 
@@ -1578,15 +1909,23 @@ void palavra_won(int r, int g, int b){
 
     void voce_ganhou(){
         zerar_tudo();
-        printf("vou escrever you won\n");
-        sleep(1);
         palavra_won(0,5,0);
         palavra_you(0,5,0);
-        sleep(3);
+        sleep(2);
         palavra_won(0,0,0);
         palavra_you(0,0,0);
         exit(0);
 
+    }
+
+    void voce_perdeu(){
+        zerar_tudo();
+        palavra_game(7,0,0);
+        palavra_over(7,0,0);
+        sleep(2);
+        palavra_game(0,0,0);
+        palavra_over(0,0,0);
+        exit(0);
     }
 
 
@@ -1606,12 +1945,8 @@ void palavra_won(int r, int g, int b){
         letra_verde(0,5,0);
         letra_branca(7,7,7);
         letra_vermelha(7,0,0);
-        //palavra_won(0,5,0);
-        //palavra_you(0,5,0);
-       
 
-
-
+        
 
 
         
@@ -1648,8 +1983,8 @@ void palavra_won(int r, int g, int b){
                 letra_branca(0,0,0);
                 letra_vermelha(0,0,0);
               
-                //palavra_won(0,0,0);
-                //palavra_you(0,0,0);
+
+             
 
                 setar();
                 jogo();   
@@ -1666,5 +2001,7 @@ void palavra_won(int r, int g, int b){
 
         int main() {
             display();
-            inicio();       
+            inicio();
+
+            
         }
