@@ -860,6 +860,7 @@ void *obstaculo_velocidade_diferente(){
   
   
             //primeiro retangulo do cenario, depois da largada verde
+            pthread_mutex_lock(&mutex); 
             for(int i = 5; i<= 14; i++){
                 for(int j = 1; j <= 49; j++){
                     editar_bloco_background(fd, &dataA,&dataB, i, j, 7, 7, 7);
@@ -990,7 +991,7 @@ void *obstaculo_velocidade_diferente(){
 
         };
 
-        
+        pthread_mutex_unlock(&mutex); 
 
 
             int endereco = 10000;
@@ -1102,7 +1103,7 @@ void *obstaculo_velocidade_diferente(){
 
    
     void palavra_you(int r, int g, int b){
-
+        pthread_mutex_lock(&mutex); 
 
     
     //letra y 
@@ -1198,13 +1199,14 @@ void *obstaculo_velocidade_diferente(){
         }
        
     }
+    pthread_mutex_unlock(&mutex); 
 
 }
 
 void palavra_won(int r, int g, int b){
 
     //letra w 
-
+    pthread_mutex_lock(&mutex); 
     for (int i = 36; i <= 37; i++){
 
         for(int j = 34; j <= 43; j++){
@@ -1330,11 +1332,13 @@ void palavra_won(int r, int g, int b){
         }
        
     }
+    pthread_mutex_unlock(&mutex); 
 
 }
 /*******************************************************************************************************************************************************************************/
 void palavra_game(int r, int g, int b){
 
+    pthread_mutex_lock(&mutex); 
 
     //letra g
 
@@ -1490,6 +1494,8 @@ void palavra_game(int r, int g, int b){
        
     }
 
+    pthread_mutex_unlock(&mutex); 
+
 
 
 
@@ -1497,7 +1503,7 @@ void palavra_game(int r, int g, int b){
 
 void palavra_over(int r, int g, int b){
 
-    
+    pthread_mutex_lock(&mutex); 
     //letra O
 
     for (int i = 31; i <= 38; i++){
@@ -1659,11 +1665,15 @@ void palavra_over(int r, int g, int b){
        
     }
 
+    pthread_mutex_unlock(&mutex); 
+
 
 }
 
 
     void letra_verde(int r,int g,int b){
+
+        pthread_mutex_lock(&mutex); 
 
         //LETRA G
         for(int i = 15; i <= 22; i++) {
@@ -1790,9 +1800,13 @@ void palavra_over(int r, int g, int b){
             editar_bloco_background(fd, &dataA, &dataB, 60, i, r, g, b);
         }
 
+        pthread_mutex_unlock(&mutex); 
+
     }
 
     void letra_branca(int r, int g,int b){
+
+        pthread_mutex_lock(&mutex); 
         //letra T
         for(int i = 21; i <= 25; i++) {
             editar_bloco_background(fd, &dataA, &dataB, i, 33, r, g, b);
@@ -1814,10 +1828,12 @@ void palavra_over(int r, int g, int b){
             editar_bloco_background(fd, &dataA, &dataB, 30, i, r, g, b);
         }
         
-
+        pthread_mutex_unlock(&mutex); 
     }
 
     void letra_vermelha(int r,int g,int b){
+
+        pthread_mutex_lock(&mutex); 
         //letra R
         for(int i = 35; i <= 42; i++) {
             editar_bloco_background(fd, &dataA, &dataB, i, 31, r, g, b);
@@ -1899,7 +1915,7 @@ void palavra_over(int r, int g, int b){
             editar_bloco_background(fd, &dataA, &dataB, 62, i, r, g, b);
         }
 
-        
+        pthread_mutex_unlock(&mutex); 
 
 
 
