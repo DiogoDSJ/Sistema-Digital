@@ -21,14 +21,14 @@ pthread_t threads[10];
 uint32_t dataA = 0;
 uint32_t dataB = 0;
 int colidiu = 0;
-
+int habilidade = 0;
 int diminuir_display = 3;
 int ativar_sprite = 1;
 
 pthread_mutex_t mutex;
 int coodx = 136, coody = 58;
 int jogo_comecou = 0;
-
+int cheat = 0;
 int obj7 = 1;
 int loop1 = 1;
 int dir = 1;
@@ -89,7 +89,7 @@ volatile int *HEX0_ptr;
                 }
             }
             
-            if(colidiu != 1){
+            if(colidiu != 1 && (pause_jogo == 0 || cheat == 1 || habilidade == 1)){
                 if(ev.code == 1){
                     coody += ev.value;
                 }
@@ -103,7 +103,7 @@ volatile int *HEX0_ptr;
             if(coodx > 619) coodx= 619;
             if(coody > 459) coody = 459;
             if(coody < 0) coody = 0;
-
+            
             //colisao muro esquerdo
             if(coodx <= 37){
                 coodx -= ev.value;
@@ -164,7 +164,7 @@ volatile int *HEX0_ptr;
             pthread_mutex_lock(&mutex); 
             print_sprite(fd, &dataA, &dataB, ativar_sprite, coodx, coody, 25, 1);
             pthread_mutex_unlock(&mutex); 
-            
+    
             // Processa o evento recebido
             if (ev.type == EV_REL) {
                 // Eventos de movimento relativo do mouse
@@ -178,8 +178,7 @@ volatile int *HEX0_ptr;
                 if (ev.code == BTN_LEFT || ev.code == BTN_RIGHT || ev.code == BTN_MIDDLE) {
                     if (ev.value == 1)
                         printf("Botão %d pressionado\n", ev.code);
-                        if(pause_jogo == 0) pause_jogo = 1;
-                        else pause_jogo = 0;
+                        if(habilidade == 0) habilidade = 1;
                 }
             } 
         }
@@ -380,27 +379,29 @@ void *obstaculo(){
             print_sprite(fd, &dataA, &dataB, ativar_sprite, obstaculo_x_4, obstaculo_y_4, 1, 7);
             print_sprite(fd, &dataA, &dataB, ativar_sprite, obstaculo_x_5, obstaculo_y_5, 1, 8);
             pthread_mutex_unlock(&mutex); 
-            if(dir_x1_x2 == 1) {
-                obstaculo_x_1 += 2;
-                obstaculo_x_2 -= 2;
-                if(obstaculo_x_1 > 99) dir_x1_x2 = 2;
-            }
-            else if(dir_x1_x2 == 2){
-                obstaculo_x_1 -= 2;
-                obstaculo_x_2 += 2;
-                if(obstaculo_x_1 < 40) dir_x1_x2 = 1;
-            }
-            if(dir_y3_y4 == 1){
-                obstaculo_y_3 +=2; 
-                obstaculo_y_4 -=2;
-                obstaculo_y_5 +=2;
-                if(obstaculo_y_3 > 385) dir_y3_y4 = 2;
-            }
-            else if(dir_y3_y4 == 2){
-                obstaculo_y_3 -=2;
-                obstaculo_y_4 +=2;
-                obstaculo_y_5 -=2;
-                if(obstaculo_y_3 < 340) dir_y3_y4 = 1;
+            if(habilidade != 1){
+                if(dir_x1_x2 == 1) {
+                    obstaculo_x_1 += 2;
+                    obstaculo_x_2 -= 2;
+                    if(obstaculo_x_1 > 97) dir_x1_x2 = 2;
+                }
+                else if(dir_x1_x2 == 2){
+                    obstaculo_x_1 -= 2;
+                    obstaculo_x_2 += 2;
+                    if(obstaculo_x_1 < 42) dir_x1_x2 = 1;
+                }
+                if(dir_y3_y4 == 1){
+                    obstaculo_y_3 +=1; 
+                    obstaculo_y_4 -=1;
+                    obstaculo_y_5 +=1;
+                    if(obstaculo_y_3 > 384) dir_y3_y4 = 2;
+                }
+                else if(dir_y3_y4 == 2){
+                    obstaculo_y_3 -=1;
+                    obstaculo_y_4 +=1;
+                    obstaculo_y_5 -=1;
+                    if(obstaculo_y_3 < 342) dir_y3_y4 = 1;
+                }
             }
         }
         //COLISAO sprite 1 do retangulo vertical
@@ -516,52 +517,51 @@ void *obstaculo_velocidade_diferente(){
         print_sprite(fd, &dataA, &dataB, ativar_sprite, obstaculo_x_10, obstaculo_y_10, 1, 13);
         print_sprite(fd, &dataA, &dataB, ativar_sprite, obstaculo_x_premio, obstaculo_y_premio, 10, 14); //sprite premio
         pthread_mutex_unlock(&mutex);
-        if(pause_jogo == 0){
-            if(dir == 1) {
-                obstaculo_x_7 += 4;
-                obstaculo_x_9 += 4;
-                if(obstaculo_x_7 > 165) dir = 2;
+        if(habilidade != 1){
+            if(pause_jogo == 0){
+                if(dir == 1) {
+                    obstaculo_x_7 += 4;
+                    obstaculo_x_9 += 4;
+                    if(obstaculo_x_7 > 168) dir = 2;
+                }
+                else if(dir == 2){
+                    obstaculo_y_7 += 4;
+                    obstaculo_y_9 += 4;
+                    if(obstaculo_y_7 > 385) dir = 3;
+                }
+                else if(dir == 3){
+                    obstaculo_x_7 -= 4;
+                    obstaculo_x_9 -= 4;
+                    if(obstaculo_x_7 < 44) dir = 4;
+                }
+                else if(dir == 4){ 
+                    obstaculo_y_7 -= 4;
+                    obstaculo_y_9 -= 4;
+                    if(obstaculo_y_7 < 239) dir = 1;
+                }
+                
+                if(dir2 == 1) {
+                    obstaculo_x_8 -= 4;
+                    obstaculo_x_10 -= 4;
+                    if(obstaculo_x_8 < 90) dir2 = 2;
+                }
+                else if(dir2 == 2){
+                    obstaculo_y_8 -= 4;
+                    obstaculo_y_10 -= 4;
+                    if(obstaculo_y_8 < 272) dir2 = 3;
+                }
+                else if(dir2 == 3){ 
+                    obstaculo_x_8 += 4;
+                    obstaculo_x_10 += 4;
+                    if(obstaculo_x_8 > 140) dir2 = 4;
+                }
+                
+                else if(dir2 == 4){
+                    obstaculo_y_8 += 4;
+                    obstaculo_y_10 += 4;
+                    if(obstaculo_y_8 > 354) dir2 = 1;
+                }
             }
-            else if(dir == 2){
-                obstaculo_y_7 += 4;
-                obstaculo_y_9 += 4;
-                if(obstaculo_y_7 > 385) dir = 3;
-            }
-            else if(dir == 3){
-                obstaculo_x_7 -= 4;
-                obstaculo_x_9 -= 4;
-                if(obstaculo_x_7 < 44) dir = 4;
-            }
-            else if(dir == 4){ 
-                obstaculo_y_7 -= 4;
-                obstaculo_y_9 -= 4;
-                if(obstaculo_y_7 < 233) dir = 1;
-            }
-            
-            
-
-            if(dir2 == 1) {
-                obstaculo_x_8 -= 2;
-                obstaculo_x_10 -= 2;
-                if(obstaculo_x_8 < 90) dir2 = 2;
-            }
-            else if(dir2 == 2){
-                obstaculo_y_8 -= 2;
-                obstaculo_y_10 -= 2;
-                if(obstaculo_y_8 < 272) dir2 = 3;
-            }
-            else if(dir2 == 3){ 
-                obstaculo_x_8 += 2;
-                obstaculo_x_10 += 2;
-                if(obstaculo_x_8 > 140) dir2 = 4;
-            }
-            
-            else if(dir2 == 4){
-                obstaculo_y_8 += 2;
-                obstaculo_y_10 += 2;
-                if(obstaculo_y_8 > 354) dir2 = 1;
-            }
-            
         }
         /*
         if(obstaculo_x_7 == 172 && obj7 == 1){
@@ -664,7 +664,7 @@ void *obstaculo_velocidade_diferente(){
     
 
     void alterar_display(){
-        
+
         if(diminuir_display == 3){
             *HEX0_ptr = 0b0110000; 
         }
@@ -810,7 +810,18 @@ void *obstaculo_velocidade_diferente(){
         
     }
 
-
+    void *habilidade_parar(){
+        while(1){
+            if(habilidade == 1){ 
+                *HEX5_ptr = 0b0001001;
+                sleep(1);
+                *HEX5_ptr = 0b1111111;
+                habilidade = 2;
+            }
+        }
+        pthread_exit(NULL);
+        //return 0;
+    }
 
     int main_mouse(){
         //sem_init(&semaforo, 0, 1);        
@@ -821,18 +832,20 @@ void *obstaculo_velocidade_diferente(){
         pthread_create(&(threads[1]),NULL,botao,NULL);
         pthread_create(&(threads[2]),NULL,obstaculo,NULL);
         pthread_create(&(threads[3]),NULL,obstaculo_velocidade_diferente,NULL);
+        pthread_create(&(threads[4]),NULL,habilidade_parar,NULL);
 
 
         pthread_join(threads[0],NULL);
         pthread_join(threads[1],NULL);
         pthread_join(threads[2],NULL);
         pthread_join(threads[3],NULL);
-
+        pthread_join(threads[4],NULL);
 
         pthread_cancel(threads[0]);
         pthread_cancel(threads[1]);
         pthread_cancel(threads[2]);
         pthread_cancel(threads[3]);
+        pthread_cancel(threads[4]);
         
 
 
@@ -860,7 +873,7 @@ void *obstaculo_velocidade_diferente(){
   
   
             //primeiro retangulo do cenario, depois da largada verde
-            pthread_mutex_lock(&mutex); 
+            pthread_mutex_lock(&mutex);
             for(int i = 5; i<= 14; i++){
                 for(int j = 1; j <= 49; j++){
                     editar_bloco_background(fd, &dataA,&dataB, i, j, 7, 7, 7);
@@ -991,9 +1004,9 @@ void *obstaculo_velocidade_diferente(){
 
         };
 
-        pthread_mutex_unlock(&mutex); 
+        
 
-
+            pthread_mutex_unlock(&mutex); 
             int endereco = 10000;
             for (int i = 0; i < 21; i++) {
                 for (int j = 0; j < 20; j++) {
@@ -1200,7 +1213,6 @@ void *obstaculo_velocidade_diferente(){
        
     }
     pthread_mutex_unlock(&mutex); 
-
 }
 
 void palavra_won(int r, int g, int b){
@@ -1337,7 +1349,6 @@ void palavra_won(int r, int g, int b){
 }
 /*******************************************************************************************************************************************************************************/
 void palavra_game(int r, int g, int b){
-
     pthread_mutex_lock(&mutex); 
 
     //letra g
@@ -1494,10 +1505,8 @@ void palavra_game(int r, int g, int b){
        
     }
 
+
     pthread_mutex_unlock(&mutex); 
-
-
-
 
 }
 
@@ -1666,15 +1675,11 @@ void palavra_over(int r, int g, int b){
     }
 
     pthread_mutex_unlock(&mutex); 
-
-
 }
 
 
     void letra_verde(int r,int g,int b){
-
         pthread_mutex_lock(&mutex); 
-
         //LETRA G
         for(int i = 15; i <= 22; i++) {
             editar_bloco_background(fd, &dataA, &dataB, i, 19, r, g, b);
@@ -1799,13 +1804,10 @@ void palavra_over(int r, int g, int b){
             editar_bloco_background(fd, &dataA, &dataB, 59, i, r, g, b);
             editar_bloco_background(fd, &dataA, &dataB, 60, i, r, g, b);
         }
-
         pthread_mutex_unlock(&mutex); 
-
     }
 
     void letra_branca(int r, int g,int b){
-
         pthread_mutex_lock(&mutex); 
         //letra T
         for(int i = 21; i <= 25; i++) {
@@ -1827,12 +1829,11 @@ void palavra_over(int r, int g, int b){
             editar_bloco_background(fd, &dataA, &dataB, 27, i, r, g, b);
             editar_bloco_background(fd, &dataA, &dataB, 30, i, r, g, b);
         }
-        
         pthread_mutex_unlock(&mutex); 
+
     }
 
     void letra_vermelha(int r,int g,int b){
-
         pthread_mutex_lock(&mutex); 
         //letra R
         for(int i = 35; i <= 42; i++) {
@@ -1915,10 +1916,10 @@ void palavra_over(int r, int g, int b){
             editar_bloco_background(fd, &dataA, &dataB, 62, i, r, g, b);
         }
 
+        
+
+
         pthread_mutex_unlock(&mutex); 
-
-
-
         
 
     }
@@ -1963,8 +1964,12 @@ void palavra_over(int r, int g, int b){
         letra_vermelha(7,0,0);
 
         
-
-
+        //LIMPADORRRRRRR
+        /*for(int i = 0; i< 80; i++){
+            for(int j = 0; j<60; j++){
+                editar_bloco_background(fd, &dataA,&dataB, i, j, 0,0,0);
+            }
+        }*/
         
 
 
@@ -2019,5 +2024,13 @@ void palavra_over(int r, int g, int b){
             display();
             inicio();
 
+
+
+//esse codigo ta com problema na hora da tela inicio, precisa desativar ou repintar os regisdores das letras
+
+
+
+
+//584----179
             
         }
