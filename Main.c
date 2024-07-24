@@ -89,7 +89,7 @@ volatile int *HEX0_ptr;
                 }
             }
             
-            if(colidiu != 1 && (pause_jogo == 0 || cheat == 1 || habilidade == 1)){
+            if(colidiu != 1 && (pause_jogo == 0 || cheat == 1 || (habilidade == 1 && pause_jogo == 0))){
                 if(ev.code == 1){
                     coody += ev.value;
                 }
@@ -171,14 +171,21 @@ volatile int *HEX0_ptr;
                 if (ev.code == REL_X || ev.code == REL_Y) {
                     printf("Movimento relativo: eixo %d, valor %d\n", ev.code, ev.value);
                 } else if (ev.code == REL_WHEEL) {
+
                     printf("Roda do mouse: valor %d\n", ev.value); //irrelevante
                 }
             } else if (ev.type == EV_KEY) {
                 // Eventos de botão do mouse
                 if (ev.code == BTN_LEFT || ev.code == BTN_RIGHT || ev.code == BTN_MIDDLE) {
-                    if (ev.value == 1)
-                        printf("Botão %d pressionado\n", ev.code);
-                        if(habilidade == 0) habilidade = 1;
+                    if(ev.code == BTN_MIDDLE){
+                        if(cheat == 0) cheat = 1;
+                        else{
+                            cheat = 0;
+                        }
+                    } 
+                    if(ev.code == BTN_LEFT){
+                        if (habilidade == 0) habilidade = 1;
+                    }
                 }
             } 
         }
@@ -699,6 +706,7 @@ void *obstaculo_velocidade_diferente(){
         int dir2 = 1;
         int dir_x1_x2 = 1;
         int dir_y3_y4 = 1;
+        int habilidade = 0;
         setar_sprites();
         set_background(fd, &dataA,&dataB, 0, 0, 0);
 
@@ -1483,7 +1491,7 @@ void palavra_game(int r, int g, int b){
 
     for (int i = 40; i <= 41; i++){
 
-        for(int j = 20; j <= 28; j++){
+        for(int j = 20; j <= 27; j++){
             editar_bloco_background(fd, &dataA, &dataB, i, j, r, g, b);
         }
        
@@ -1602,7 +1610,7 @@ void palavra_over(int r, int g, int b){
 
     for (int i = 53; i <= 54; i++){
 
-        for(int j = 34; j <= 41; j++){
+        for(int j = 34; j <= 40; j++){
             editar_bloco_background(fd, &dataA, &dataB, i, j, r, g, b);
         }
        
@@ -1681,9 +1689,10 @@ void palavra_over(int r, int g, int b){
     void letra_verde(int r,int g,int b){
         pthread_mutex_lock(&mutex); 
         //LETRA G
+        
         for(int i = 15; i <= 22; i++) {
+            editar_bloco_background(fd, &dataA, &dataB, i, 18, r, g, b);
             editar_bloco_background(fd, &dataA, &dataB, i, 19, r, g, b);
-            editar_bloco_background(fd, &dataA, &dataB, i, 20, r, g, b);
         }
 
         for(int i = 20; i <= 27; i++) {
@@ -1969,7 +1978,8 @@ void palavra_over(int r, int g, int b){
             for(int j = 0; j<60; j++){
                 editar_bloco_background(fd, &dataA,&dataB, i, j, 0,0,0);
             }
-        }*/
+        }
+        */
         
 
 
