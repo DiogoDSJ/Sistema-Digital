@@ -110,7 +110,7 @@ void zerar_tudo(){
     int dir_x1_x2 = 1;
     int dir_y3_y4 = 1;
     int habilidade = 0;
-    setar_sprites();
+    //setar_sprites();
     set_background(fd, &dataA,&dataB, 0, 0, 0);
 
     
@@ -339,16 +339,6 @@ void inicio(){
     letra_verde(0,5,0);
     letra_branca(7,7,7);
     letra_vermelha(7,0,0);
-
-
-
-    //LIMPADORRRRRRR
-    /*for(int i = 0; i< 80; i++){
-        for(int j = 0; j<60; j++){
-            editar_bloco_background(fd, &dataA,&dataB, i, j, 0,0,0);
-        }
-    }
-    */
 
 
 
