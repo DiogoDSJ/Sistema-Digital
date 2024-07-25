@@ -516,7 +516,7 @@ void palavra_over(int r, int g, int b){
        
     }
 
-    for (int i = 55; i <= 60; i++){
+    for (int i = 53; i <= 60; i++){
 
         for(int j = 40; j <= 41; j++){
             editar_bloco_background(fd, &dataA, &dataB, i, j, r, g, b);
