@@ -11,10 +11,7 @@
   O estudante Gabriel Sá Barreto Alves, durante suas atividades de iniciação científica e no desenvolvimento de seu trabalho de conclusão de curso, projetou e implementou um processador gráfico. Este processador possibilita mover e controlar elementos em um monitor VGA com resolução de 640×480 pixels, permitindo desenhar dois tipos de polígonos convexos (quadrados e triângulos) e uma quantidade específica de sprites. Durante o desenvolvimento, Gabriel utilizou como unidade de processamento principal o NIOS II. Ele foi embarcado na mesma FPGA que o Processador Gráfico. 
 </p>
 <p>
-A plataforma DE1-SoC possui um processador ARM (HPS), eliminando a necessidade do NIOS II. No entanto, isso gera um problema: como o HPS se comunicará com o processador gráfico? Para resolver essa questão, foi solicitado aos alunos da disciplina TEC499 MI - Sistemas Digitais, do curso de Engenharia de Computação da Universidade Estadual de Feira de Santana (UEFS), que desenvolvessem módulos de kernel no HPS para o processador gráfico.
-</p>
-<p>
-Este projeto tem como objetivo desenvolver módulos do kernel para estabelecer a comunicação entre o HPS e o processador gráfico, além de criar uma biblioteca em C para facilitar o trabalho do programador ao realizar tarefas com o auxílio da GPU disponibilizada na plataforma DE1-SoC.
+Foi solicitado aos alunos da disciplina TEC499 MI - Sistemas Digitais, do curso de Engenharia de Computação da Universidade Estadual de Feira de Santana (UEFS), que desenvolvessem um jogo para a arquitetura proposta. O usuário deve interagir exclusivamente utilizando o mouse. Para acessar e controlar o jogo (iniciar, pausar, continuar, etc.), o usuário deve usar os botões disponíveis na placa. O sistema deve utilizar a interface VGA para a visualização.
 </p>
 
 <h2>
@@ -24,10 +21,32 @@ Este projeto tem como objetivo desenvolver módulos do kernel para estabelecer a
 • O código deve ser escrito na linguagem C;
 </p>
 <p>
-• A biblioteca deve conter no mínimo uma função para cada Instrução do Processador Gráfico;
+• O sistema só poderá utilizar os componentes disponíveis na placa;
 </p>
 <p>
-• A biblioteca deve seguir as recomendações descritas em: https://github.com/MaJerle/c-code-style.
+• Um novo sprite deve ser colocado na memória e utilizado no jogo;
+</p>
+<p>
+• As ações do ator do jogo (pulo, tiro, etc.) devem ser comandadas pelos botões do mouse;
+</p>
+<p>
+• A variação da velocidade no movimento do mouse deve ser refletida na ação do ator do jogo. Por exemplo, no jogo breakout a barra se move com velocidade maior se o movimento do mouse for brusco;
+</p>
+<p>
+• Informações do jogo (placar, vidas, etc.) devem ser exibidas no display de 7-segmentos;
+</p>
+<p>
+• O jogo deve permitir ações do usuário através dos botões da DE1-SoC, no mínimo: a pausa, o retorno, o reinício e o término do jogo.
+</p>
+<p>
+<p>
+• O usuário poderá parar e reiniciar o jogo em qualquer momento; 
+</p>
+<p>
+• O usuário poderá sair do jogo em qualquer momento.
+</p>
+<p>
+• Pelo menos um elemento passivo do jogo deverá se mover.
 </p>
 
 <h2>Equipe</h2>
@@ -40,7 +59,7 @@ Este projeto tem como objetivo desenvolver módulos do kernel para estabelecer a
 <h2>Sumário</h2>
 
 <div id= "fundamentacao">
-<h2>Fundamentação teórica</h2>
+<h2>Definição de termos e conceitos</h2>
 <p>
   Nesta seção será apresentado alguns conceitos teóricos básicos para compreensão do projeto.
 </p>
