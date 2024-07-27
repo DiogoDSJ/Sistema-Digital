@@ -397,7 +397,7 @@ E por fim, caso você queira pausar o jogo, apenas pressione o botão KEY 3 da p
 
 <h2> Fluxograma </h2>
 <p align="center">
-  <img src = "https://github.com/user-attachments/assets/5541657c-ca0d-44f9-8e5f-9c3488905950" width = "450px"/>
+  <img src = "https://github.com/user-attachments/assets/5541657c-ca0d-44f9-8e5f-9c3488905950" width = "800px"/>
   <p align="center">
     <strong>Figura 15: Fluxograma</strong> 
   </p>
