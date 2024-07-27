@@ -239,13 +239,30 @@ Essa lógica foi implementada para todos os sprites que se movimentavam da direi
   Colisão dos sprites e cenário
 </h3>
 <p>
-  completa ai armando, cm teu texto ou diogo sla
+  Vale a pena ressaltar que, no jogo, o sprite só pode se movimentar dentro da plataforma. Portanto, tivemos que implementar a técnica de colisão para limitar a movimentação do nosso sprite principal dentro da plataforma.
+
+Isso foi possível associando a movimentação do sprite, feita através do mouse, com as coordenadas que delimitamos como limite, ou seja, as coordenadas até onde vai a plataforma. Foi feito um cálculo para que, quando as coordenadas do sprite principal atingissem o limite (ou melhor, uma parede da plataforma), ao invés de aumentar as coordenadas e alterar a posição do sprite, subtraímos o limite ultrapassado da posição do sprite, fazendo com que ele pareça estar parado no mesmo lugar, como se algo impedisse sua movimentação.
+
+Essa funcionalidade só foi possível porque, para implementar o movimento do mouse, precisamos somar as coordenadas que obtemos com a movimentação do mouse. Assim, ao invés de somar e alterar a posição do sprite a partir daquele limite imposto pela coordenada da parede, subtraímos esse valor, fazendo com que a colisão do sprite com toda a plataforma fosse implementada, limitando a movimentação apenas naquele espaço.
+
+</p>
+
+<h3>Colisão de sprites</h3>
+<p>
+  A colisão dos sprites foi necessária para que, quando um dos sprites secundários que impedem a passagem tocasse no sprite principal, uma vida fosse reduzida e o sprite principal voltasse ao ponto de partida.
+
+Essa colisão foi implementada de forma simples: através da coordenada onde se encontra o sprite, somamos 20 (que é o tamanho do sprite). Com isso, criamos uma condição `if` que verifica se a coordenada do sprite principal encostou no limite do sprite secundário, calculado através da soma da coordenada x do sprite mais 20 (seu tamanho). Isso também é feito com o eixo y.
+
+Dessa forma, formamos um quadrado do tamanho do sprite secundário e, quando as coordenadas do sprite principal "batem" nesse limite, é detectada uma colisão. Uma vida do jogador é reduzida e o sprite é lançado de volta à plataforma de saída do jogo. Vale a pena ressaltar que o jogador possui 3 vidas, que serão sinalizadas no display de 7 segmentos, explicado adiante.
+
+Assim, quando um dos nove sprites que impedem o deslocamento colide com o sprite principal, ele retorna à base. No entanto, quando o sprite principal colide com o sprite adicionado na linha de chegada, o jogador vence o jogo.
+
 </p>
 
 
 
 
-<h3>Componentes: mouse, botões e display de 7 segmentos</h3>
+<h3>Componentes: botões e display de 7 segmentos</h3>
 
 <h4> Botões</h4>
 <p>
@@ -255,7 +272,6 @@ Essa lógica foi implementada para todos os sprites que se movimentavam da direi
 <p>
  Para ter acesso aos botões da placa, foi preciso criar uma função para gerenciar a interação e captura de eventos. Ela mapeia a memória de um ponteiro virtual para acessar esses botões e lê continuamente o estado deles por meio de um “while true”. Dependendo do botão pressionado, a função realiza ações específicas já citadas anteriormente
 </p>
-
 <p>
   Durante o desenvolvimento do jogo, surgiram problemas na leitura dos eventos dos botões devido ao fenômeno conhecido como "debounce". O debounce é um conceito que se refere ao atraso na leitura de um botão quando ele é pressionado ou solto, evitando que múltiplos sinais elétricos indesejados sejam interpretados como várias pressões. Embora o debounce ajude a estabilizar a leitura em muitos casos, ele acabou conflitando com o loop while true, que estava lendo os eventos muito rapidamente. Isso resultava em leituras imprecisas e em um comportamento indesejado dos botões.
 </p>
@@ -268,9 +284,126 @@ Essa lógica foi implementada para todos os sprites que se movimentavam da direi
   Para solucionar o problema de leitura rápida dos eventos, foi implementada uma variável chamada "estado" que aguarda o debounce acontecer, ou seja, espera que o registrador dos botões mapeados na memória mude os bits de estado indicando estar pressionado (0) para não pressionado (1) antes de permitir a leitura do evento novamente. Essa abordagem garantiu que, após um pressionamento, o sistema não registrasse novas entradas até que o botão estivesse completamente liberado. A variável "estado" atuava como um "filtro", evitando que múltiplos eventos fossem acionados em sequência rápida e assegurando que a interação do jogador fosse precisa e confiável.
 </p>
 <p>
+
+<h4>Display de 7 segmentos</h4>
+<p>
+   Primeiro, o arquivo de dispositivo /dev/mem é aberto, permitindo acesso a endereços físicos de memória. Caso haja algum erro na abertura do arquivo, uma mensagem de erro é exibida e a função retorna. Em seguida, a função mmap é usada para obter um mapeamento entre os endereços físicos e os endereços virtuais, possibilitando a manipulação da memória a partir do espaço de endereçamento do processo. Se o mapeamento falhar, uma mensagem de erro é exibida, o arquivo é fechado e a função retorna.
+Após obter o mapeamento, os endereços dos displays de 7 segmentos são mapeados para ponteiros virtuais, com a ajuda de um mutex para garantir que esta operação seja segura em um ambiente multi-thread. Os ponteiros virtuais são definidos para cada um dos displays (HEX5 a HEX0). Entretanto, foram apenas utilizados os HEX0 e HEX1 para exibir vidas restantes e informar quando a habilidade foi usada pelo jogador.
+
+</p>
   
 </p>
 </div>
+<h3>Funções</h3>
+<h4>
+  Main
+</h4>
+<p>
+  A função main do programa primeiro chama a função display, que é responsável por configurar os displays de 7 segmentos, mapeando a memória física para a memória virtual e definindo os valores dos segmentos dos displays. Essa função também chama alterar_display para gerenciar a exibição dos dígitos conforme necessário.
+Em seguida, a função inicio é chamada. Essa função abre o dispositivo /dev/driver_dos_amigos, limpa e reseta o cenário do jogo chamando as funções limpa_tudo e zerar_tudo, define o fundo do jogo e pinta letras de diferentes cores. Ela também mapeia o endereço virtual para acessar as chaves (KEY_ptr). Depois disso, entra em um loop infinito para monitorar o botão KEY0. Quando o botão é pressionado, o cenário é configurado e a função jogo é chamada para iniciar o jogo.
+Além disso, a função `chamar_threads` inicializa todas as threads do jogo, coloca-as em execução e, posteriormente, encerra-as.
+
+</p>
+
+<h4>
+  Componentes
+</h4>
+<p>
+  O arquivo componentes define duas funções, mousefik e botao, que serão usadas como threads em um jogo. A função mousefik é responsável por gerenciar a interação com o mouse. Primeiro, ela abre o dispositivo de entrada do mouse e começa a ler continuamente os eventos do dispositivo. Com base nos movimentos do mouse, a função ajusta a posição de um sprite na tela. Além disso, a função verifica colisões entre o sprite e as bordas da tela, bem como com obstáculos específicos definidos no código. Quando uma colisão é detectada, a posição do sprite é ajustada para evitar que ele saia dos limites permitidos. A função também atualiza a posição do sprite na tela, garantindo que as colisões sejam respeitadas. Além dos movimentos, a função reage a cliques do mouse, ativando ou desativando um "cheat" ou uma "habilidade" dependendo de qual botão é pressionado.
+A função botao é responsável por gerenciar a interação com botões físicos. Ela mapeia a memória de um ponteiro virtual para acessar esses botões e lê continuamente o estado deles. Dependendo do botão pressionado, a função realiza ações específicas. Quando o botão de início é pressionado, o jogo começa. Se o botão de reset for pressionado, o jogo é reiniciado. Outro botão permite reiniciar a configuração, enquanto um quarto botão pode pausar ou despausar o jogo. Após realizar a ação correspondente, a função retorna ao estado de leitura contínua, aguardando a próxima interação do usuário.
+Essas funções são utilizadas em um contexto de jogo para permitir que o usuário controle o jogo através de um mouse e botões físicos. Isso proporciona uma interação dinâmica e responsiva, onde o usuário pode mover um sprite pela tela usando o mouse e controlar o estado do jogo utilizando os botões físicos.
+
+</p>
+
+<h4>
+  Game
+</h4>
+<p>
+  A função setar inicializa variáveis de direção, define a posição inicial do sprite principal, ativa o sprite, inicializa a variável de habilidade e desbloqueia o mutex para permitir a impressão do sprite. Em seguida, imprime o sprite principal na posição inicial, atualiza o display hexadecimal e define a variável diminuir_display como 3.
+
+A função setar_sprites define as posições iniciais dos obstáculos e bloqueia o mutex para operações seguras. Em seguida, imprime cada um dos obstáculos nas posições especificadas e desbloqueia o mutex.
+
+A função obstaculo utiliza nanosleep para criar um intervalo de tempo entre as iterações do loop. Define as posições iniciais de vários obstáculos e entra em um loop que verifica colisões e movimenta os obstáculos. Se não houver pausa no jogo (pause_jogo == 0), bloqueia o mutex, imprime os obstáculos, desbloqueia o mutex e ajusta a posição dos obstáculos de acordo com as variáveis de direção. Verifica colisões entre o sprite principal e os obstáculos e, em caso de colisão, redefine a posição do sprite principal, imprime novamente o sprite, desbloqueia o mutex, reseta a habilidade, decrementa diminuir_display e chama a função alterar_display.
+
+A função jogo configura e inicia um jogo. Primeiro, abre um dispositivo específico usando um caminho predefinido, que provavelmente se refere a algum hardware ou driver relacionado ao jogo. Em seguida, configura várias partes do cenário do jogo através de loops que preenchem blocos de fundo com diferentes cores. Depois, uma imagem é definida por uma matriz de valores que representam diferentes cores. O código percorre essa matriz e desenha os sprites correspondentes no cenário, configurando suas cores adequadamente. Para garantir a segurança durante as operações de desenho, mutexes são usados para sincronização. Após configurar o cenário e desenhar a imagem, o código inicia as threads necessárias para a execução do jogo. Em seguida, lê dados do dispositivo para verificar se tudo está funcionando corretamente. Finalmente, o dispositivo é fechado para liberar os recursos.
+
+A função obstaculo_velocidade_diferente movimenta os obstáculos e verifica colisões com o jogador. Ela inicia um intervalo de 9 milissegundos e define as posições iniciais dos obstáculos e do prêmio. Dentro de um loop infinito, a função trava o mutex para garantir que a impressão dos sprites (imagens dos obstáculos) seja atômica e depois destrava o mutex. Os obstáculos se movem em diferentes direções com base nas variáveis de direção dir e dir2. As colisões entre o jogador e os obstáculos são verificadas. Se houver uma colisão, o jogador é reposicionado, a habilidade especial é desativada, e o display é atualizado. A colisão com o prêmio termina o jogo, declarando o jogador vencedor.
+
+A função habilidade_parar verifica se a habilidade especial do jogador está ativa (habilidade == 1). Se estiver, aciona o display de 7 segmentos, aguardando 1 segundo, depois desativa a habilidade.
+
+A função voce_ganhou é chamada quando o jogador coleta o prêmio. Ela reseta o jogo, exibe a mensagem "YOU WON" por 2 segundos e encerra o programa.
+
+A função voce_perdeu é chamada quando o jogador colide com um obstáculo em certas condições, reseta o jogo, exibe a mensagem "GAME OVER" por 2 segundos e encerra o programa.
+</p>
+
+
+<h2>Telas</h2>
+<p>
+  O arquivo `telas` é responsável pela edição das telas do jogo. Nele, é utilizado um loop `for` que percorre todo o background, pintando onde necessário para exibir as mensagens apropriadas. As mensagens incluem "Green to Red" na tela de início, "You Won" na tela final em caso de vitória, e "Game Over" na tela final em caso de derrota.
+</p>
+
+<h2>
+  Resultados
+</h2>
+<p>
+  Sendo assim, como resultados, tivemos a funcionalidade do jogo mais difícil do mundo. Com isso, o fluxo de execução se dá quando a função main é chamada. Com ela, é chamada a função display, que faz o mapeamento de memória do display e desliga os displays de 7 segmentos que não serão usados. O 0 e o 3 são acesos nos displays HEX1 e HEX0, indicando a vida. Após a conclusão, a função inicio é chamada. Nela, temos o mapeamento de memória dos botões, e são enviadas à GPU as informações para desenhar na tela a imagem com o título do jogo. Após isso, entra-se em um loop, esperando que o botão KEY0 seja pressionado. Com isso, temos o resultado:
+</p>
+<p align="center">
+  <img src = "https://github.com/user-attachments/assets/0e6caeb7-dcda-45c0-9653-10ccf065827c" width = "450px"/>
+  <p align="center">
+    <strong>Figura 11: Tela incial</strong> 
+  </p>
+</p>
+
+<p>
+  Logo após, o jogo é iniciado, e todas as threads são chamadas. Isso faz com que a execução da movimentação dos sprites, a captação do mouse, a captação dos botões e habilidades aconteçam ao mesmo tempo. Sendo assim, temos o resultado:
+</p>
+
+<p align="center">
+  <img src = "https://github.com/user-attachments/assets/52270309-b153-4d55-a7d1-26e5675d36bc" width = "450px"/>
+  <p align="center">
+    <strong>Figura 12: Tela de jogo</strong> 
+  </p>
+</p>
+
+<p>
+  Com o jogo pronto para jogar, o objetivo é chegar no ponto vermelho do mapa. Caso você não consiga e colida 3 vezes com outros sprites secundários, a tela seguinte aparecerá para você, e o jogo será encerrado após 3 segundos.
+</p>
+
+<p align="center">
+  <img src = "https://github.com/user-attachments/assets/c8ea5c44-1887-494f-9aa9-4a31ae5c9724" width = "450px"/>
+  <p align="center">
+    <strong>Figura 13: Tela de game over</strong> 
+  </p>
+</p>
+
+<p>
+  Com o jogo pronto para jogar, o objetivo é chegar no ponto vermelho do mapa. Caso você não consiga e colida 3 vezes com outros sprites secundários, a tela seguinte aparecerá para você, e o jogo será encerrado após 3 segundos. Entretanto, caso você consiga cumprir o objetivo e capturar o diamante no outro lado do mapa, você terá vencido o jogo, e a tela seguinte aparecerá para você, seguida do fechamento do jogo.
+</p>
+
+<p align="center">
+  <img src = "https://github.com/user-attachments/assets/e51fd5f8-d821-40b2-8305-a961ca293d14" width = "450px"/>
+  <p align="center">
+    <strong>Figura 14: Tela de you won</strong> 
+  </p>
+</p>
+
+<p>
+  Vale a pena ressaltar que você pode utilizar habilidades durante o jogo. A habilidade consiste em paralisar a movimentação dos sprites secundários por 1 segundo, permitindo que você passe de uma posição difícil. No entanto, ela só está disponível uma vez por jogo; caso você perca uma vida, poderá utilizá-la novamente. A habilidade é ativada pelo clique direito do mouse.
+Além disso, você pode utilizar o modo debug, como um hack. Dessa forma, você pode parar todos os sprites secundários e seguir até o caminho da vitória. Para isso, basta pausar o jogo e segurar o botão do meio do mouse.
+E por fim, caso você queira pausar o jogo, apenas pressione o botão KEY 3 da placa. Para encerrar o jogo, pressione o botão KEY 1, e para reiniciar a posição do sprite juntamente com a vida, pressione o botão KEY 2. Todas essas atividades podem ser realizadas durante a execução do jogo.
+
+</p>
+
+<h2> Fluxograma </h2>
+<p align="center">
+  <img src = "https://github.com/user-attachments/assets/5541657c-ca0d-44f9-8e5f-9c3488905950" width = "450px"/>
+  <p align="center">
+    <strong>Figura 15: Fluxograma</strong> 
+  </p>
+</p>
+
+
 
 <h2>
   Execução do projeto
