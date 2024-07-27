@@ -56,46 +56,6 @@ Foi solicitado aos alunos da disciplina TEC499 MI - Sistemas Digitais, do curso 
   <li><a href="https://github.com/eugabrielbr">Gabriel Silva dos Santos</a></li>
 </ul>
 
-<h2>Sumário</h2>
-
-<div id= "fundamentacao">
-<h2>Definição de termos e conceitos</h2>
-<p>
-  Nesta seção será apresentado alguns conceitos teóricos básicos para compreensão do projeto.
-</p>
-
-<h4>Espaço do usuário ou "userspace"</h4>
-<p>
-O userspace, ou espaço do usuário, refere-se à parte do sistema operacional onde os aplicativos e processos de usuário são executados. É uma área separada do kernel do sistema operacional, que gerencia recursos de hardware e fornece serviços fundamentais para os aplicativos. No userspace, os programas têm acesso limitado aos recursos do sistema e são executados em um ambiente mais controlado, o que ajuda a garantir a estabilidade e segurança do sistema como um todo. O userspace é onde a maioria das interações diretas dos usuários com o sistema ocorre, através de aplicativos de software, enquanto o kernel cuida das operações mais fundamentais e de baixo nível do sistema.
-</p>
-
-<h4>Kernel</h4>
-<p>
-  O kernel é o núcleo do sistema operacional, responsável por gerenciar recursos de hardware e fornecer serviços essenciais para os aplicativos. Ele atua como intermediário entre o hardware e o software, controlando acesso à memória, processadores, dispositivos e sistemas de arquivos. Existem diferentes tipos de kernels, incluindo monolítico, microkernel e híbrido, cada um com abordagens distintas de design. O kernel é crucial para a estabilidade, segurança e desempenho do sistema operacional. Sua operação eficiente é essencial para garantir o funcionamento adequado do sistema como um todo.
-</p>
-
-<h4>Módulo do kernel</h4>
-<p>
-  No Linux, um módulo do kernel é um pedaço de código que pode ser carregado e descarregado no kernel dinamicamente. Isso permite que funcionalidades sejam adicionadas ao kernel sem a necessidade de recompilar ou reiniciar o sistema.
-</p>
-
-<h4>Device numbers ou major e minor numbers</h4>
-<p>
-  No UNIX, existem dois principais tipos de números de dispositivos, sendo eles o “major number” e “minor number”. Estes números são basicamente identificadores, onde o “major number” identifica o tipo de dispositivo e, na maioria dos casos, o tipo de driver que vai lidar com o dispositivo, enquanto o “minor number” identifica o dispositivo, funcionando como um identificador único. Eles são usados para ajudar o kernel a direcionar operações de E/S para os drivers de dispositivos corretos. Esses números são parte integrante da maneira como o sistema lida com dispositivos de hardware.
-</p>
-
-<h4>Device files ou arquivos de dispositivos</h4>
-<p>
-Os arquivos de dispositivos são conhecidos como arquivos especiais. Eles representam a principal "ponte" de comunicação entre o driver de dispositivo e o espaço do usuário. Uma vez acessados através de funções de entrada e saída (como open, write, etc.), o sistema operacional gerencia a conexão com o hardware associado ao dispositivo.
-</p>
-
-<h4>Processador gráfico ou GPU</h4>
-<p>Um processador gráfico, ou GPU (Graphics Processing Unit), é um componente especializado projetado para lidar com tarefas gráficas intensivas em computadores e dispositivos eletrônicos. Ele executa operações como renderização de imagens 2D e 3D, processamento de vídeo e cálculos matriciais com eficiência. As GPUs são compostas por vários núcleos de processamento paralelo, o que permite uma execução rápida de operações gráficas complexas. Elas desempenham um papel crucial em jogos, design gráfico, computação científica e outras áreas que requerem processamento gráfico avançado. Sua arquitetura altamente paralela as torna ideais para lidar com grandes volumes de dados de forma eficiente.</p>
-
-<h4>Processador de propósito geral</h4>
-<p>Um processador de propósito geral, conhecido como CPU, é um componente vital em computadores e dispositivos eletrônicos, responsável por executar uma ampla gama de tarefas de propósito geral. Desde o processamento de texto até a execução de aplicativos complexos, a CPU lida com instruções de software, executa cálculos matemáticos e controla o fluxo de dados. Diferentemente de uma GPU, otimizada para operações gráficas, a CPU é projetada para lidar com diversas atividades, garantindo a versatilidade e flexibilidade do dispositivo. Sua arquitetura inclui unidades de processamento, cache de memória e controladores de barramento, desempenhando um papel crucial no funcionamento de computadores modernos.</p>
-
-</div>
 <div id = "componentes">
 <h2>Componentes, ferramentas e softwares utilizados</h2>
 
@@ -125,7 +85,7 @@ Dois monitores foram utilizados para os testes e desenvolvimento: um monitor do 
 <p align="center">
   <img src = "https://github.com/Armaaaaaaaaaaaaaaaaaaaaaaaaaaando/Barramento/assets/129075181/a93c589a-7af7-450c-bebc-3afdfcb17657" width = "450px"/>
   <p align="center">
-    <strong>Figura2: Monitor CRT Dell</strong> 
+    <strong>Figura 2: Monitor CRT Dell</strong> 
   </p>
 </p>
 
@@ -157,22 +117,6 @@ O Compilador GNU, também conhecido como GCC, é uma ferramenta de código abert
   </p>
 </p>
 
-</div>
-
-<h4>Historia da GPU </h4>
-
-<p>
-  A GPU (Unidade de Processamento Gráfico) começou a existir no final das décadas de 1970 e início das décadas de 1980, quando os primeiros computadores pessoais começaram a ser produzidos. Naquela época, os gráficos eram processados principalmente pela CPU (Unidade de Processamento Central), o que tornou muito difícil gerar imagens em tempo real e jogos.
-
-No entanto, com o surgimento de jogos de computador e aplicações gráficas mais complexas, tornou-se evidente que o processamento gráfico requer hardware dedicado. A consequência disso foi a criação dos primeiros chips gráficos especializados, que posteriormente evoluíram para o que hoje chamamos de GPU.
-
-A série de chips gráficos da IBM, lançada em 1987, foi uma das primeiras GPUs notáveis. Em 1991, o S3 Graphics lançou uma das primeiras placas gráficas aceleradoras 2D. Mas a introdução da 3dfx Voodoo em 1996 realmente revolucionou o mercado de placas de vídeo, oferecendo aos jogadores de PC gráficos 3D acelerados por hardware.
-
-No período subsequente, empresas como NVIDIA e ATI – que posteriormente foi adquirida pela AMD – entraram no mercado com suas próprias soluções de GPU, lutando para fornecer o melhor desempenho e qualidade gráfica possível. 
-</p>
-</div>
-
-
 <h4>GPU </h4>
 <p>
  As GPUs são componentes essenciais em computadores, encarregadas do processamento de imagens. Com hardware especializado, elas lidam tanto com imagens 2D quanto 3D, realizando operações como cálculo de geometria, mapeamento de texturas e transformação de pixels.
@@ -180,205 +124,153 @@ No período subsequente, empresas como NVIDIA e ATI – que posteriormente foi a
 No contexto dos jogos e aplicativos, as imagens 3D são geradas através de gráficos vetoriais. A GPU utiliza coordenadas (vértices) para formar polígonos que compõem a cena, aplicando texturas, iluminação e outros detalhes.
 
 Após calcular a cena no espaço virtual, a GPU realiza a rasterização, convertendo-a em dados de pixels. Essas informações são então enviadas aos monitores, exibindo a imagem final. Esse ciclo se repete várias vezes por segundo, permitindo uma visualização fluida e dinâmica.
-
-
 </p>
 </div>
 
-<h4>Barrramento </h4>
+
+<div id= "jogo">
+
+<h2>Desenvolvimento do jogo</h2>
 <p>
- Um barramento, em termos simplificados, é um canal de comunicação que facilita a interação entre o hardware e o software de um sistema computacional. No âmbito deste projeto, o objetivo central é estabelecer um barramento com a finalidade de viabilizar a comunicação entre uma biblioteca em modo de usuário e um driver no modo de kernel. Nesse contexto, a compreensão do conceito de barramento se revelou crucial para o desenvolvimento efetivo deste projeto.
-
+  Após a conclusão de todos os processos de mapeamento de memória, criação do driver e desenvolvimento das funções da biblioteca, realizados no problema 2, foi iniciado o desenvolvimento do jogo solicitado no problema 3. 
 </p>
-</div>
 
-<div id= "driver">
-
-<h2>Desenvolvimento do módulo kernel</h2>
+<h3>
+  Construção do cenário e sprite personalizado
+</h3>
 
 <p>
-  O módulo desenvolvido no projeto visa comunicar-se com o processador gráfico presente na FPGA, de modo que realize as tarefas enviadas do espaço do usuário.
-</p>
-<h3>Funções</h3>
-
-<p>A primeira etapa para desenvolver o módulo do kernel foi pesquisar e analisar qual seria sua estrutura básica. Após a pesquisa, descobriu-se que um módulo geralmente precisa apresentar funções básicas de entrada, que irão se comunicar com o arquivo responsável por estabelecer a comunicação entre o espaço do usuário e o hardware. Alguns desses métodos incluem: write, open, close, etc. Essas funções permitirão o envio de instruções para a GPU e vice-versa, por meio de mapeamento de memória, que será melhor detalhado posteriormente. Segue abaixo um resumo do papel de cada função do driver:
-</p>
-
-<h4>dev_open</h4>
-<p>A função “dev_open” é chamada quando o dispositivo associado ao módulo é aberto. Esta função não realiza muitas operações, mas registra uma mensagem no log do kernel indicando que o dispositivo foi aberto com sucesso. Esta operação ajuda a monitorar e depurar o uso do dispositivo, confirmando que a abertura foi registrada pelo sistema.
-
-<h4>dev_release</h4>
-<p>A função “dev_release” é chamada quando o dispositivo é fechado. Semelhante à “dev_open”, esta função registra uma mensagem no log do kernel indicando que o dispositivo foi fechado com sucesso.
-</p>
-
-<h4>dev_read</h4>
-<p>A função “dev_read” é responsável por ler dados do dispositivo e copiá-los para o espaço do usuário. Quando chamada, ela calcula quantos bytes ainda não foram lidos da mensagem armazenada em “mensagem_principal” e copia esses bytes para o buffer do usuário. Se a cópia for bem-sucedida, a função atualiza o offset para refletir a nova posição de leitura e retorna o número de bytes lidos. Se ocorrer um erro durante a cópia, a função retorna um código de erro.
-</p>
-
-<h4>dev_write</h4>
-<p>A função “dev_write” é chamada quando dados são escritos no dispositivo a partir do espaço do usuário. Ela começa limpando o buffer “mensagem_principal” e então copia os dados do novo buffer para a mesma variável. Em seguida, a função separa dois inteiros da string recebida usando a função “separarInteiros” e envia esses inteiros via mapeamento de memória para os ponteiros que apontam para os endereços das FIFOS da GPU (“DATA_A_PTR” e “DATA_B_PTR”). Após isso, a função sinaliza o início da escrita, que ocorre de acordo com os valores dos registradores “START_PTR”, que funciona como uma espécie de clock, e “wrfull_ptr”, que guarda o status do estado da fila. Se a cópia dos dados do usuário falhar, a função retorna um código de erro.
-</p>
-
-<h4>separarInteiros</h4>
-<p>A função separarInteiros é uma função auxiliar que processa uma string para extrair dois inteiros separados. Ela percorre a string caractere por caractere, acumulando o valor numérico até encontrar o delimitador 'd'. Após o delimitador, a função continua acumulando o segundo inteiro. Esses inteiros são então utilizados na formação das instruções para GPU.
-</p>
-
-<h4>ModuleInit e ModuleExit</h4>
-<p>O módulo também precisa conter blocos de código que realizam operações quando o módulo é carregado e descarregado do sistema. No projeto, a função responsável pelo processo de inicialização do módulo é nomeada como “ModuleInit”. Ela é responsável por registrar o “major number” e “minor number” do módulo dinamicamente. Ao descarregar o módulo do sistema, a função “ModuleExit” é chamada, realizando o desregistro dos números de dispositivo associados ao módulo e, consequentemente, liberando os recursos que estavam sendo utilizados.</p>
-
-
-<h3>Mapeamento de memória </h3>
-<p>
-  Para que fosse possível fazer com que o módulo de kernel desenvolvido fosse capaz de enviar instruções para GPU, foi preciso aplicar alguns conceitos de mapeamento de memória, que serão explicados ao decorrer desta seção.
+Antes de partir para a explicação de como o cenário foi feito e alguns conceitos importantes, é interessante mencionar o objetivo do jogo implementado e em qual jogo ja existente ele foi inspirado.
 </p>
 <p>
-  O processador ARM tem a possibilidade de se comunicar com a FPGA usando tanto a ponte HPS-to-FPGA quanto a ponte Lightweight HPS-to-FPGA. Essas pontes são designadas para áreas específicas na memória do HPS. Quando um componente na FPGA está conectado a uma dessas pontes, os registros que estão mapeados na memória ficam acessíveis para leitura e escrita pelo processador ARM, utilizando os endereços de memória correspondentes às pontes. Figura 5
+O jogo foi influenciado pelo "Jogo Mais Difícil do Mundo" (Figura 5), que consiste em um ponto principal, controlado pelo jogador, que deve se movimentar de um lado da plataforma ao outro. Até aqui parece fácil, mas a dificuldade surge quando são implementados outros objetos que impedem a passagem até o destino. Sempre que colide com um desses objetos, o personagem retorna à base inicial.
 </p>
 
 <p align="center">
-  <img src = "https://github.com/Armaaaaaaaaaaaaaaaaaaaaaaaaaaando/Barramento/assets/129075181/18ed440c-d28f-4e95-9e0a-e028415bf867" width = "450px"/>
+  <img src = "https://github.com/user-attachments/assets/51454119-a83e-407e-ab54-a0bc25987261" width = "450px"/>
   <p align="center">
-    <strong>Figura 5: Diagrama de blocos das pontes AXI no contexto da estrutura FPGA e da interconexão L3 com a HPS.</strong> 
+    <strong>Figura 5: "Jogo Mais Difícil do Mundo"</strong> 
   </p>
 </p>
 
 <p>
-  A ponte utilizada para permitir que o módulo do kernel desenvolvido possa ter acesso aos componentes da GPU foi a Lightweight HPS-to-FPGA. Através da função "ioremap", que é uma função de mapeamento de memória disponível para o desenvolvimento de códigos para módulos do kernel, tornou-se possível acessar a posição de memória correspondente ao início do endereço de memória da ponte. Para isso, foi necessário inicialmente obter informações sobre o endereço base físico da ponte e o tamanho, em bytes, que abrange esse espaço. Toda a informação necessária foi encontrada no arquivo "address_map_arm.h", o qual fornecia os valores de "LW_BRIDGE_BASE" (endereço base físico) e "LW_BRIDGE_SPAN" (quantidade de espaço em bytes).
-</p>
-
-<p>
-  No Linux, devido a questões de segurança, arquitetura ou gestão de recursos, não é possível ter acesso direto ao endereço físico de memória dos componentes mapeados nas regiões do espaço de memória do HPS. A função "ioremap", ao receber como parâmetro o endereço base físico e os bytes do endereço da ponte, retorna o endereço virtual, o qual pode ser manipulado para acessar a memória física correspondente, com a intermediação do sistema operacional e de alguns dispositivos de hardware que não veem ao caso.
-</p>
-
-<p>
-  Após esse processo, para acessar os componentes da GPU, segue-se um procedimento não muito diferente do passo anterior: adiciona-se um offset ao endereço virtual, permitindo assim o acesso a cada componente. Os exemplos a seguir esclarecem melhor o mapeamento.
-</p>
-
-<h4>Alguns exemplos de endereços:</h4>
-
-<p>LW_BRIDGE_BASE: 0xFF200000 (endereço físico base ponte)</p>
-<p>LW_BRIDGE_SPAN: 0x100 (quantidade em bytes que abrange o endereço)</p>
-<p>DATA_A: 0x80 (offset para a fila de instruções A)</p>
-<p>DATA_B: 0x70 (offset para a fila de instruções B)</p>
-<p>WRREG: 0xc0 (offset para o sinal de escrita na fila)</p>
-<p>WRFULL: 0xb0 (offset para o sinal de verificação da fila)</p>
-
-<h4>Exemplos de aplicações</h4>
-
-```C
- LW_virtual = ioremap_nocache(LW_BRIDGE_BASE, LW_BRIDGE_SPAN); //mapeia e retorna o endereço virtual para LW_virtual
- DATA_A_PTR = (volatile int *)(LW_virtual + DATA_A); //soma o offset ao endereço virtual para ter acesso a posição de memória da fila de instrução A da GPU.
-
-```
-<h3>Arquivo de dispositivo</h3>
-O diretório `/dev` serve para facilitar a comunicação entre o modo de usuário e o modo de kernel. Nesse contexto, os arquivos especiais em `/dev` funcionam como pseudo-arquivos que permitem a troca de informações entre esses dois ambientes. Quando uma informação é passada do modo de usuário para o modo de kernel, ela é transferida através desse pseudo-arquivo, por meio de operações de escrita. Ambos os modos implementam funções de manipulação de arquivos, possibilitando que tanto o modo de usuário quanto o modo de kernel possam abrir e escrever nesses arquivos. Assim, de forma resumida, a existência de arquivos especiais no diretório `/dev` é essencial para a comunicação entre o modo de usuário e o modo de kernel.
-
-</div>
-
-<div id = "biblioteca">
-<h2>Desenvolvimento da biblioteca</h2>
-<p>Desenvolvemos as instruções presentes na biblioteca com base em informações detalhadas obtidas na documentação do dispositivo. Ao verificarmos a documentação fornecida, pudemos entender os protocolos necessários para interagir com o dispositivo gráfico a partir das instruções.
-
-No nosso processo de desenvolvimento da biblioteca, optamos por uma abordagem que inicialmente não utilizava parâmetros de arquivo em nossas funções. Isso se deve ao fato de termos implementado um mapeamento direto para o dispositivo de hardware. Essencialmente, isso significava que estávamos lidando diretamente com o dispositivo em si, sem a necessidade de especificar arquivos específicos em nossas chamadas de função. Após desenvolvermos e testarmos o mapeamento direto com sucesso, transferimos a responsabilidade de lidar com os arquivos para o driver do dispositivo.
-
-Definimos as instruções principais para configuram os valores de "DATA_A_ptr" e "DATA_B_ptr"`, configurados como ponteiros para inteiros de 32 bits ("uint32_t*"), com base nos parâmetros das instruções. Os valores dessas variáveis são definidos de acordo com a necessidade da instrução a partir do que estava documentado no documento da GPU. A lógica utilizada buscou tratar o "DATA_A_ptr" e "DATA_B_ptr" como registradores de 32 bits. Como cada bit geralmente possui um significado específico, foi necessário colocá-los na posição correta. Para isso, utilizamos lógica de movimentação de deslocamento com o operador OR. Basicamente, deslocamos os valores para a esquerda e, em seguida, utilizamos a operação OR para combinar esses valores com os bits existentes no registrador.
-
-Foi utilizado também funções de verificações de parâmetros para ajudar a prevenir erros decorrentes de valores fora dos limites esperados. Por exemplo, ao definir cores, coordenadas ou tamanhos, é crucial garantir que esses valores estejam dentro das especificações suportadas pela GPU, ou seja, evitando que essas entradas cheguem à GPU e causem problemas.
-
-<h3>Funções</h3>
-
-open_device(const char *device_path):
-    Objetivo: Abrir o arquivo contido na /dev/.
-    Funcionalidade: Tenta abrir o dispositivo especificado no modo de leitura e escrita. Retorna o descritor de arquivo (file descriptor) se bem-sucedido e -1 em caso de falha.
-
-write_device(int fd, const char *data):
-    Objetivo: Escreve os dados por abstração na /dev/.
-    Funcionalidade: Tenta escrever os dados fornecidos no dispositivo associado ao descritor de arquivo fornecido. Retorna o número de bytes escritos se bem-sucedido e -1 em caso de falha.
-
-read_device(int fd, char *buffer, size_t size):
-    Objetivo: Ler do dispositivo.
-    Funcionalidade: Tenta ler dados do dispositivo associado ao descritor de arquivo fornecido e os armazena no buffer fornecido. Retorna o número de bytes lidos se bem-sucedido e -1 em caso de falha.
-
-close_device(int fd):
-    Objetivo: Fechar o dispositivo.
-    Funcionalidade: Tenta fechar o dispositivo associado ao descritor de arquivo fornecido.
-
-verificar_cor(int vermelho, int verde, int azul):
-    Objetivo: Verificar se os valores RGB estão dentro dos limites.
-    Funcionalidade: Verifica se os valores de vermelho, verde e azul estão dentro do intervalo permitido (0 a 7).
-
-verificar_cordenadas(int x, int y):
-    Objetivo: Verificar se as coordenadas estão dentro dos limites da tela.
-    Funcionalidade: Verifica se as coordenadas x e y estão dentro dos limites da tela (0 a 639 para x e 0 a 479 para y).
-
-verificar_cordenadas_poligono(int x, int y):
-    Objetivo: Verificar se as coordenadas estão dentro dos limites do polígono.
-    Funcionalidade: Verifica se as coordenadas x e y estão dentro dos limites do polígono (0 a 511 para x e 0 a 479 para y).
-
-verificar_tamanho(int tamanho):
-    Objetivo: Verificar se o tamanho está dentro dos limites.
-    Funcionalidade: Verifica se o tamanho fornecido está dentro do intervalo permitido (0 a 15).
-
-verificar_sprite(int sprite):
-    Objetivo: Verificar se o número do sprite está dentro dos limites.
-    Funcionalidade: Verifica se o número do sprite fornecido está dentro do intervalo permitido (0 a 31).
-
-verificar_registrador(int registrador):
-    Objetivo: Verificar se o número do registrador está dentro dos limites.
-    Funcionalidade: Verifica se o número do registrador fornecido está dentro do intervalo permitido (1 a 31).
-
-verificar_bloco(int bloco):
-    Objetivo: Verificar se o número do bloco está dentro dos limites.
-    Funcionalidade: Verifica se o número do bloco fornecido está dentro do intervalo permitido (0 a 4799).
-
-verificar_endereco(int endereco):
-    Objetivo: Verificar se o endereço está dentro dos limites.
-    Funcionalidade: Verifica se o endereço fornecido está dentro do intervalo permitido (0 a 12799).
-
-editar_sprite(int fd, uint32_t DATA_A_ptr, uint32_t DATA_B_ptr, int endereco, int vermelho, int verde, int azul):
-    Objetivo: Editar as propriedades de um sprite.
-    Funcionalidade: Configura os valores de DATA_A e DATA_B para editar as propriedades do sprite com os valores fornecidos e escreve no dispositivo.
-
-editar_bloco_background(int fd, uint32_t DATA_A_ptr, uint32_t DATA_B_ptr, int x, int y, int vermelho, int verde, int azul):
-    Objetivo: Editar as propriedades de um bloco de fundo.
-    Funcionalidade: Configura os valores de DATA_A e DATA_B para editar as propriedades do bloco de fundo com os valores fornecidos e escreve no dispositivo.
-
-print_quadrado(int fd, uint32_t DATA_A_ptr, uint32_t DATA_B_ptr, int endereco, int x, int y, int tamanho, int vermelho, int verde, int azul):
-    Objetivo: Desenhar um quadrado na tela.
-    Funcionalidade: Configura os valores de DATA_A e DATA_B para desenhar um quadrado na tela com os valores fornecidos e escreve no dispositivo.
-
-print_triangulo(int fd, uint32_t DATA_A_ptr, uint32_t DATA_B_ptr, int endereco, int x, int y, int tamanho, int vermelho, int verde, int azul):
-    Objetivo: Desenhar um triângulo na tela.
-    Funcionalidade: Configura os valores de DATA_A e DATA_B para desenhar um triângulo na tela com os valores fornecidos e escreve no dispositivo.
-
-print_sprite(int fd, uint32_t DATA_A_ptr, uint32_t DATA_B_ptr, uint32_t ativar_sprite, int x, int y, int sprite, int registrador):
-    Objetivo: Configurar e imprimir um sprite.
-    Funcionalidade: Configura os valores de DATA_A e DATA_B para configurar e imprimir um sprite na tela com os valores fornecidos e escreve no dispositivo.
-
-set_background(int fd, uint32_t DATA_A_ptr, uint32_t DATA_B_ptr, int vermelho, int verde, int azul):
-    Objetivo: Definir a cor de fundo da tela.
-    Funcionalidade: Configura os valores de DATA_A e DATA_B para definir a cor de fundo da tela com os valores fornecidos e escreve no dispositivo.
-
-escrever_no_arquivo(int fd, uint32_t dataA, uint32_t dataB, char* informacao):
-    Objetivo: Envia a string formatada contendo o data_A e data_B da função para o driver.
-    Funcionalidade: Escreve a informação fornecida da instrução no arquivo associado ao descritor de arquivo fornecido.
-</p>
-</div>
-
-
-
-<h2>Resultado</h2>
-<p>
-  Após a conclusão de todos os processos de mapeamento de memória, criação do driver e desenvolvimento das funções da biblioteca, obtivemos o resultado esperado. Foi possível criar uma imagem por meio da alteração da cor de fundo, inserção de polígonos e sprites. Dessa forma, a imagem final resultou em uma paisagem de floresta, onde utilizamos a modificação dos blocos para simular a grama verde, polígonos para representar o sol, nuvens e árvores, e sprites para adornar o chão com flores e pedras. Além disso, a imagem incluiu uma nave espacial atirando em outra no céu, conforme ilustrado na Figura 6.
+  O jogo original possui fases, o que justifica seu título de "Jogo Mais Difícil do Mundo". A cada fase completada, a próxima se torna progressivamente mais difícil, pois os cenários mudam, a velocidade dos pontos varia, ou a maneira de deslocamento dos pontos é alterada (Figura 6). Com essa influência em mente, partimos para o nosso desenvolvimento. Vale a pena ressaltar que nossa versão possui uma única fase, com um nível de dificuldade mediano, não sendo tão semelhante com o original.
 </p>
 
 <p align="center">
-  <img src = "https://github.com/Armaaaaaaaaaaaaaaaaaaaaaaaaaaando/Barramento/assets/111616936/5016e9fe-7bfc-4adc-ac72-d1fc1ec1b923" width = "450px"/>
+  <img src = "https://github.com/user-attachments/assets/56fdc963-fa8a-44f7-89fc-a378ed721dbe" width = "450px"/>
   <p align="center">
-    <strong>Figura 6.</strong> 
+    <strong>Figura 6: Nível mais avançado do "Jogo Mais Difícil do Mundo"</strong> 
   </p>
 </p>
 
+<p>
+Antes de se construir o cenário, fez-se o design do objeto principal, que seria controlado pelo jogador. A ideia para o personagem principal do jogo veio de um emoji do Facebook, mas com uma versão mais séria e sem óculos (Figura 7). Ele foi criado, primeiramente, através de uma ferramenta online chamada PixelArt. Com essa ferramenta, fez-se o desenho que foi implementado no jogo. O objetivo de se utilizar essa ferramenta foi facilitar a construção, visto que os blocos dos sprites têm 20x20 pixels. Portanto, seria necessário preencher 400 blocos de pixels para construir a imagem desejada, o que poderia não ficar satisfatório se feito de maneira desorganizada. Assim, a ferramenta mencionada ajudou na localização dos pixels, para que o emoji fosse desenhado de forma exata pela GPU.
+</p>
+
+<p align="center">
+  <img src = "https://github.com/user-attachments/assets/d8fd9646-bd74-44e3-92a3-6fe89b942f83" width = "450px"/>
+  <p align="center">
+    <strong>Figura 7: Emoji base</strong> 
+  </p>
+</p>
+
+<p>
+  Utilizou-se a função editar_bloco_sprite para criar o sprite do objeto principal, combinada com laços de repetição "for", para imprimir linha a linha do desenho desejado. Vale a pena ressaltar que, como já se tinham 24 sprites na memória da GPU, associou-se o sprite ao registrador 25. Com isso, obteve-se o resultado descrito na figura 8.
+</p>
+
+<p align="center">
+  <img src = "https://github.com/user-attachments/assets/c9545d0d-f481-4d5e-881c-c3e11fdc310b" width = "450px"/>
+  <p align="center">
+    <strong>Figura 8: Sprite personalizado do objeto principal</strong> 
+  </p>
+</p>
+
+<p>
+  Finalizado a parte de criação do sprite, partiu-se para a criação do cenário. Nosso objetivo foi criar algo simples, para que o jogador saia de uma plataforma e chegue a outra de forma intuitiva. Assim, nosso cenário não possui muitas curvas, sendo um caminho consideravelmente simples. A dificuldade estará na movimentação dos sprites secundários, que serão explicados mais adiante.
+</p>
+
+<p>
+A construção do cenário foi possível graças à função editar_bloco_background, disponível na biblioteca já implementada e utilizada no problema anterior. De forma semelhante à construção do sprite, utilizaram-se laços de repetição "for" para fornecer os parâmetros necessários (coordenadas, cor, etc.) para a função que edita o background, desenhando, assim, pixel a pixel a imagem. O cenário base foi feito por meio da ferramenta PixelArt, que ajudou a determinar as coordenadas dos pixels que seriam modificados.
+Com isso, obteve-se um fundo preto, com uma plataforma e os pontos de início pintados de verde e os de chegada pintados de vermelho (Figura 9).
+</p>
+
+<p align="center">
+  <img src = "https://github.com/user-attachments/assets/0ca465df-3683-44e5-ab4b-8aff0dcf1048" width = "450px"/>
+  <p align="center">
+    <strong>Figura 9: Cenário do jogo</strong> 
+  </p>
+</p>
+
+
+
+<h3>
+  Movimentação com o mouse
+</h3>
+
+<p>
+O objeto principal tem o objetivo de se movimentar pelo mapa para seguir a funcionalidade do jogo. Para realizar esse movimento e permitir a interação do jogador, utilizou-se o mouse. Com o auxílio da biblioteca input.h, foi possível abrir o arquivo do dispositivo e capturar os eventos ao movimentá-lo. Dessa forma, associou-se o movimento do mouse às coordenadas do sprite e, ao imprimi-lo na tela, foi possível incrementar suas coordenadas de impressão com as coordenadas do mouse, permitindo que o sprite do objeto principal se movesse com uma animação semelhante à do ponteiro do Windows.
+</p>
+
+
+<h3>
+  Movimentação dos sprites secundários
+</h3>
+
+<p>
+  Foi utilizado um total de 10 sprites já contidos no banco de registradores da GPU. A funcionalidade de 9 deles era impedir que o sprite principal chegasse até a plataforma de chegada, enquanto um deles deveria ser coletado na chegada para indicar que o jogo foi vencido (figura 10).
+</p>
+<p>
+Com isso em mente, a utilização dos sprites foi possível graças à função print_sprite da biblioteca, na qual se imprimiram na tela 9 sprites "inimigos". Após posicionar todos na tela, foi necessário implementar uma lógica para que eles se movimentassem, de maneira semelhante ao sprite principal, modificando as coordenadas x e y do sprite. Entretanto, essa movimentação não foi feita pelo mouse, mas de forma automática pelo jogo. Os dois primeiros sprites se movimentavam da direita para a esquerda, o que foi possível ao armazenar a posição inicial deles em variáveis e fazer o deslocamento somando um. Quando o sprite chegava ao limite da plataforma, todo aquele valor que foi somado era subtraído da coordenada para que ele voltasse à posição inicial.
+Isso foi feito através de duas variáveis: a posição inicial do x e do y, e uma variável de distância, que indicava ao sprite quanto ele iria percorrer antes de voltar. O limite percorrido era até ele tocar na parede da plataforma, o que fazia com que todo o valor acrescentado fosse subtraído, retornando ao estado inicial. É importante destacar que: quanto maior o valor incrementado, maior o velocidade dos sprites passivos.
+</p>
+<p>
+Essa lógica foi implementada para todos os sprites que se movimentavam da direita para a esquerda, de cima para baixo e outros tipos de movimento.
+</p>
+
+<p align="center">
+  <img src = "https://github.com/user-attachments/assets/b4806bae-4c5e-4cf8-b909-91191e51c4ef" width = "450px"/>
+  <p align="center">
+    <strong>Figura 10: Sprites secundários</strong> 
+  </p>
+</p>
+
+<h3>
+  Colisão dos sprites e cenário
+</h3>
+<p>
+  completa ai armando, cm teu texto ou diogo sla
+</p>
+
+
+
+
+<h3>Componentes: mouse, botões e display de 7 segmentos</h3>
+
+<h4> Botões</h4>
+<p>
+  Os botões da placa foram essenciais para o desenvolvimento do jogo. Com eles, foi possível atribuir algumas funcionalidades como: pausar, reiniciar, iniciar e encerrar o jogo. 
+</p>
+
+<p>
+ Para ter acesso aos botões da placa, foi preciso criar uma função para gerenciar a interação e captura de eventos. Ela mapeia a memória de um ponteiro virtual para acessar esses botões e lê continuamente o estado deles por meio de um “while true”. Dependendo do botão pressionado, a função realiza ações específicas já citadas anteriormente
+</p>
+
+<p>
+  Durante o desenvolvimento do jogo, surgiram problemas na leitura dos eventos dos botões devido ao fenômeno conhecido como "debounce". O debounce é um conceito que se refere ao atraso na leitura de um botão quando ele é pressionado ou solto, evitando que múltiplos sinais elétricos indesejados sejam interpretados como várias pressões. Embora o debounce ajude a estabilizar a leitura em muitos casos, ele acabou conflitando com o loop while true, que estava lendo os eventos muito rapidamente. Isso resultava em leituras imprecisas e em um comportamento indesejado dos botões.
+</p>
+
+<p>
+ Os botões do jogo estão em um registrador mapeado na memória, onde cada um dos 4 bits representa um botão diferente. Quando um botão é pressionado, o bit correspondente a esse botão é definido como 0, indicando que o botão está pressionado. Quando o botão é solto, o bit é definido como 1, indicando que o botão não está mais pressionado. Essa configuração permite que o sistema identifique quais botões estão sendo pressionados em um determinado momento. 
+</p>
+
+<p>
+  Para solucionar o problema de leitura rápida dos eventos, foi implementada uma variável chamada "estado" que aguarda o debounce acontecer, ou seja, espera que o registrador dos botões mapeados na memória mude os bits de estado indicando estar pressionado (0) para não pressionado (1) antes de permitir a leitura do evento novamente. Essa abordagem garantiu que, após um pressionamento, o sistema não registrasse novas entradas até que o botão estivesse completamente liberado. A variável "estado" atuava como um "filtro", evitando que múltiplos eventos fossem acionados em sequência rápida e assegurando que a interação do jogador fosse precisa e confiável.
+</p>
+<p>
+  
+</p>
+</div>
 
 <h2>
   Execução do projeto
