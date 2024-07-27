@@ -14,61 +14,45 @@
 #include <sys/mman.h>
 #include "address_map_arm.h"
 
-
+/*******************************************************************************************************************************************************************************/
 void palavra_you(int r, int g, int b){
         pthread_mutex_lock(&mutex); 
-
-    
     //letra y 
-
     for (int i = 11; i <= 12; i++){
-
         for(int j = 19; j <= 22; j++){
             editar_bloco_background(fd, &dataA, &dataB, i, j, r, g, b);
         }
-       
     }
 
     for (int i = 19; i <= 20; i++){
-
         for(int j = 19; j <= 22; j++){
             editar_bloco_background(fd, &dataA, &dataB, i, j, r, g, b);
         }
-       
     }
 
     for (int i = 13; i <= 18; i++){
-
         for(int j = 23; j <= 24; j++){
             editar_bloco_background(fd, &dataA, &dataB, i, j, r, g, b);
         }
-       
     }
 
     for (int i = 15; i <= 16; i++){
-
         for(int j = 25; j <= 28; j++){
             editar_bloco_background(fd, &dataA, &dataB, i, j, r, g, b);
         }
-       
     }
 
     //letra O
-
     for (int i = 25; i <= 28; i++){
-
         for(int j = 19; j <= 20; j++){
             editar_bloco_background(fd, &dataA, &dataB, i, j, r, g, b);
         }
-       
     }
 
     for (int i = 23; i <= 24; i++){
-
         for(int j = 21; j <= 26; j++){
             editar_bloco_background(fd, &dataA, &dataB, i, j, r, g, b);
-        }
-       
+        } 
     }
 
     for (int i = 29; i <= 30; i++){
@@ -409,7 +393,7 @@ void palavra_game(int r, int g, int b){
     pthread_mutex_unlock(&mutex); 
 
 }
-
+/*******************************************************************************************************************************************************************************/
 void palavra_over(int r, int g, int b){
 
     pthread_mutex_lock(&mutex); 
@@ -577,7 +561,7 @@ void palavra_over(int r, int g, int b){
     pthread_mutex_unlock(&mutex); 
 }
 
-
+/*******************************************************************************************************************************************************************************/
     void letra_verde(int r,int g,int b){
         pthread_mutex_lock(&mutex); 
         //LETRA G
@@ -707,7 +691,7 @@ void palavra_over(int r, int g, int b){
         }
         pthread_mutex_unlock(&mutex); 
     }
-
+/*******************************************************************************************************************************************************************************/
     void letra_branca(int r, int g,int b){
         pthread_mutex_lock(&mutex); 
         //letra T
@@ -816,11 +800,5 @@ void palavra_over(int r, int g, int b){
             editar_bloco_background(fd, &dataA, &dataB, 61, i, r, g, b);
             editar_bloco_background(fd, &dataA, &dataB, 62, i, r, g, b);
         }
-
-        
-
-
         pthread_mutex_unlock(&mutex); 
-        
-
     }
